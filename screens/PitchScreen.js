@@ -25,6 +25,7 @@ export default class PitchScreen extends React.Component {
 
   state = {
     level: 1,
+    noteQuestioned: this._getRandNote(1),
     successConsequtiveCount: 0,
     history: [],
     isLastAnswerCorrect: null,
@@ -32,8 +33,8 @@ export default class PitchScreen extends React.Component {
     fadeAnimVal: 1,
   };
 
-  _getRandNote() {
-    const randIdx = Math.floor(Math.random() * this.state.level);
+  _getRandNote(level) {
+    const randIdx = Math.floor(Math.random() * level);
     return allNotes[randIdx];
   }
 
@@ -87,7 +88,6 @@ export default class PitchScreen extends React.Component {
   }
 
   _feedbackAnimationListener = (value) => {
-    console.log(value.value);
     this.setState({fadeAnimVal: value.value});
   }
 
@@ -117,6 +117,7 @@ export default class PitchScreen extends React.Component {
 
     this.setState({
       level: newLevel,
+      noteQuestioned: this._getRandNote(newLevel),
       successConsequtiveCount: newSuccessConsequtiveCount,
       history: newHistory,
       isLastAnswerCorrect: isAnswerCorrect,
@@ -135,9 +136,8 @@ export default class PitchScreen extends React.Component {
     } else {
       feedbackBackgroundColor = 'rgba(255,0,0,' + this.state.fadeAnimVal + ')';
     }
-    console.log(feedbackBackgroundColor);
 
-    const noteQuestioned = this._getRandNote();
+    const noteQuestioned = this.state.noteQuestioned;
     const noteOptions = this._getUserOptions(noteQuestioned);
     return (
       <View style={styles.container}>
