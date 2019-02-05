@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { sanFranciscoWeights } from 'react-native-typography'
+import { sanFranciscoWeights } from 'react-native-typography';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { WebBrowser } from 'expo';
 

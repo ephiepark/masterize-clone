@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Animated,
   Button,
+  Dimensions,
   Image,
   Platform,
   ScrollView,
@@ -10,40 +11,42 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { sanFranciscoWeights } from 'react-native-typography'
+import { sanFranciscoWeights } from 'react-native-typography';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { WebBrowser } from 'expo';
 
-const allNotes = ["C", "D", "E", "F", "G", "A", "B"];
-const SUCCESS_COUNT_FOR_LEVEL_UP = 10;
-
+const allNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+const SUCCESS_COUNT_FOR_LEVEL_UP = 3;
+const GREEN_INTERPOLATION = {
+  inputRange: [0, 0.5, 1],
+  outputRange: ['#84b0dd', 'rgba(0, 255, 0, 1)', '#84b0dd'],
+};
+const RED_INTERPOLATION = {
+  inputRange: [0, 0.5, 1],
+  outputRange: ['#84b0dd', 'rgba(255, 0, 0, 1)', '#84b0dd'],
+};
 
 export default class PitchScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
-  state = {
-    level: 1,
-    noteQuestioned: this._getRandNote(1),
-    successConsequtiveCount: 0,
-    history: [],
-    isLastAnswerCorrect: null,
-    fadeAnim: new Animated.Value(1),
-    fadeAnimVal: 1,
+  constructor() {
+    super();
+    this.state = {
+      backgroundColor: '#84b0dd',
+      level: 1,
+      noteQuestioned: this._getRandNote(1),
+      successConsequtiveCount: 0,
+      history: [],
+      isLastAnswerCorrect: null,
+      fadeAnim: new Animated.Value(1),
+    };
   };
 
   _getRandNote(level) {
     const randIdx = Math.floor(Math.random() * level);
     return allNotes[randIdx];
-  }
-
-  _getHistoryRecord(level, noteQuestioned, noteUserAnswer) {
-    return {
-      'level': level,
-      'noteQuestioned': noteQuestioned,
-      'noteUserAnswer': noteUserAnswer,
-    };
   }
 
   _handleCorrectAnswer() {
@@ -55,10 +58,11 @@ export default class PitchScreen extends React.Component {
     ) {
       newLevel = this.state.level + 1;
       newSuccessConsequtiveCount = 0;
-    }
+    };
+
     return {
-      newLevel: newLevel,
-      newSuccessConsequtiveCount: newSuccessConsequtiveCount
+      newLevel,
+      newSuccessConsequtiveCount,
     };
   }
 
@@ -66,8 +70,8 @@ export default class PitchScreen extends React.Component {
     let newLevel = Math.max(this.state.level - 1, 1);
     let newSuccessConsequtiveCount = 0;
     return {
-      newLevel: newLevel,
-      newSuccessConsequtiveCount: newSuccessConsequtiveCount
+      newLevel,
+      newSuccessConsequtiveCount,
     };
   }
 
@@ -79,113 +83,71 @@ export default class PitchScreen extends React.Component {
         <Button
           onPress={this._handleButtonClick.bind(this, noteQuestioned, noteOption)}
           title={noteOption}
-          color="#841584"
+          color='#841584'
           key={noteOption}
         />
       );
-    }
+    };
+
     return options;
   }
 
-  _feedbackAnimationListener = (value) => {
-    this.setState({fadeAnimVal: value.value});
-  }
+  _handleButtonClick = (noteQuestioned, noteUserAnswer) => {
+    const historyRecord = {
+      level: this.state.level,
+      noteQuestioned,
+      noteUserAnswer,
+    };
+    const newHistory = this.state.history.concat(historyRecord);
+    const isAnswerCorrect = (noteQuestioned === noteUserAnswer);
+    const { newLevel, newSuccessConsequtiveCount } = isAnswerCorrect ?
+      this._handleCorrectAnswer() : this._handleWrongAnswer();
 
-  _startAnswerFeedbackAnimation() {
-    const fadeAnim = new Animated.Value(1);
-    fadeAnim.addListener(this._feedbackAnimationListener);
+    const fadeAnim = new Animated.Value(0);
     Animated.timing(
       fadeAnim,
       {
-        toValue: 0,
+        toValue: 1,
         duration: 1000,
-      }
-    ).start();
-    this.setState({fadeAnim: fadeAnim});
-  }
-
-  _handleButtonClick = (noteQuestioned, noteUserAnswer) => {
-    const historyRecord = this._getHistoryRecord(
-      this.state.level,
-      noteQuestioned,
-      noteUserAnswer,
-    );
-    const newHistory = this.state.history.concat(historyRecord);
-    const isAnswerCorrect = (noteQuestioned === noteUserAnswer);
-    const {newLevel, newSuccessConsequtiveCount} = isAnswerCorrect ?
-      this._handleCorrectAnswer() : this._handleWrongAnswer();
+      }).start();
 
     this.setState({
+      backgroundColor: isAnswerCorrect ?
+        fadeAnim.interpolate(GREEN_INTERPOLATION)
+        : fadeAnim.interpolate(RED_INTERPOLATION),
       level: newLevel,
       noteQuestioned: this._getRandNote(newLevel),
       successConsequtiveCount: newSuccessConsequtiveCount,
       history: newHistory,
       isLastAnswerCorrect: isAnswerCorrect,
+      fadeAnim,
     });
-    this._startAnswerFeedbackAnimation();
   };
 
   render() {
-    // User Answer feedback
-    let { fadeAnim } = this.state;
-    let feedbackBackgroundColor = '';
-    if (this.state.isLastAnswerCorrect === null) {
-      feedbackBackgroundColor = '#84b0dd';
-    } else if (this.state.isLastAnswerCorrect) {
-      feedbackBackgroundColor = 'rgba(0,255,0,' + this.state.fadeAnimVal + ')';
-    } else {
-      feedbackBackgroundColor = 'rgba(255,0,0,' + this.state.fadeAnimVal + ')';
-    }
-
-    const noteQuestioned = this.state.noteQuestioned;
+    const { backgroundColor, noteQuestioned } = this.state;
     const noteOptions = this._getUserOptions(noteQuestioned);
     return (
       <View style={styles.container}>
-        <ScrollView style={[styles.container, {backgroundColor: feedbackBackgroundColor}]} contentContainerStyle={styles.contentContainer}>
+        <Animated.View style={[styles.container, { backgroundColor: backgroundColor }]}>
           <View style={styles.titleContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
             <Text style={[sanFranciscoWeights.thin, styles.title]}>Master Pitch</Text>
           </View>
-
           <View style={styles.displayContainer}>
             <Text style={[sanFranciscoWeights.thin]}>{noteQuestioned}</Text>
           </View>
-
           <View style={styles.buttonContainer}>
             {noteOptions}
           </View>
-        </ScrollView>
+        </Animated.View>
       </View>
     );
-  }
-
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      return (
-        <Text style={styles.developmentModeText}>
-          (Dev Mode)
-        </Text>
-      );
-    } else {
-      return null;
-    }
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#84b0dd',
-  },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
   },
   title: {
     color: '#fff',
@@ -194,6 +156,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     alignItems: 'center',
     marginHorizontal: 50,
+    paddingTop: 50,
   },
   displayContainer: {
     alignItems: 'center',
