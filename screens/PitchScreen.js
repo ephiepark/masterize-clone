@@ -13,9 +13,11 @@ import {
 } from 'react-native';
 import { sanFranciscoWeights } from 'react-native-typography';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { WebBrowser } from 'expo';
+import { WebBrowser, Audio } from 'expo';
+import PianoNoteMap from '../piano_note_utils/PianoNoteMap';
 
-const allNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+const allNotes = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'];
+
 const SUCCESS_COUNT_FOR_LEVEL_UP = 3;
 const GREEN_INTERPOLATION = {
   inputRange: [0, 0.5, 1],
@@ -26,6 +28,17 @@ const RED_INTERPOLATION = {
   outputRange: ['#84b0dd', 'rgba(255, 0, 0, 1)', '#84b0dd'],
 };
 
+async function play(note) {
+  const soundObject = new Audio.Sound();
+  try {
+    await soundObject.loadAsync(PianoNoteMap.get(note));
+    await soundObject.playAsync();
+    // Your sound is playing!
+  } catch (error) {
+    // An error occurred!
+  }
+}
+
 export default class PitchScreen extends React.Component {
   static navigationOptions = {
     header: null,
@@ -33,6 +46,10 @@ export default class PitchScreen extends React.Component {
 
   constructor() {
     super();
+    // TODO this is super hacky. This is for demo purpose
+    const initPlay = async () => { await play("C4"); };
+    initPlay();
+
     this.state = {
       backgroundColor: '#84b0dd',
       level: 1,
@@ -92,7 +109,7 @@ export default class PitchScreen extends React.Component {
     return options;
   }
 
-  _handleButtonClick = (noteQuestioned, noteUserAnswer) => {
+  _handleButtonClick = async (noteQuestioned, noteUserAnswer) => {
     const historyRecord = {
       level: this.state.level,
       noteQuestioned,
@@ -111,12 +128,15 @@ export default class PitchScreen extends React.Component {
         duration: 1000,
       }).start();
 
+    const randNote = this._getRandNote(newLevel);
+    // TODO this is hacky refactor this later.
+    setTimeout(async () => {await play(randNote)}, 600);
     this.setState({
       backgroundColor: isAnswerCorrect ?
         fadeAnim.interpolate(GREEN_INTERPOLATION)
         : fadeAnim.interpolate(RED_INTERPOLATION),
       level: newLevel,
-      noteQuestioned: this._getRandNote(newLevel),
+      noteQuestioned: randNote,
       successConsequtiveCount: newSuccessConsequtiveCount,
       history: newHistory,
       isLastAnswerCorrect: isAnswerCorrect,
@@ -132,9 +152,6 @@ export default class PitchScreen extends React.Component {
         <Animated.View style={[styles.container, { backgroundColor: backgroundColor }]}>
           <View style={styles.titleContainer}>
             <Text style={[sanFranciscoWeights.thin, styles.title]}>Master Pitch</Text>
-          </View>
-          <View style={styles.displayContainer}>
-            <Text style={[sanFranciscoWeights.thin]}>{noteQuestioned}</Text>
           </View>
           <View style={styles.buttonContainer}>
             {noteOptions}
