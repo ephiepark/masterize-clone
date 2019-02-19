@@ -32,13 +32,13 @@ export default class AppRow extends React.PureComponent {
                 </Text>
                 <View style={[styles.textRow, styles.containerSubTitle]}>
                   <Text numberOfLines={1} style={styles.textSmall}>
-                    Category: 
+                    Category:
                     {' '}
-                    {item.type}
+                    {item.category}
                   </Text>
                 </View>
                 <Text style={styles.textSmall}>
-                  Features: 
+                  Features:
                   {' '}
                   {item.desc}
                 </Text>

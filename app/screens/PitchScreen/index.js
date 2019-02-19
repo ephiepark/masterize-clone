@@ -1,30 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Animated,
   Button,
-  Dimensions,
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
   Text,
-  TouchableOpacity,
   View
 } from 'react-native';
-import { sanFranciscoWeights } from 'react-native-typography';
-import { WebBrowser, Audio } from 'expo';
-import PianoNoteMap from '../utils/PianoNoteMap';
+import { Audio } from 'expo';
+import PianoNoteMap from '../../utils/PianoNoteMap';
+import {
+  blue,
+  lightYellow
+} from '../../styles/Colors';
+
+import styles from './styles';
 
 const allNotes = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'];
 
 const SUCCESS_COUNT_FOR_LEVEL_UP = 3;
 const GREEN_INTERPOLATION = {
   inputRange: [0, 0.5, 1],
-  outputRange: ['#84b0dd', 'rgba(0, 255, 0, 1)', '#84b0dd']
+  outputRange: [lightYellow, 'rgba(22, 173, 22, 0.71)', lightYellow]
 };
 const RED_INTERPOLATION = {
   inputRange: [0, 0.5, 1],
-  outputRange: ['#84b0dd', 'rgba(255, 0, 0, 1)', '#84b0dd']
+  outputRange: [lightYellow, 'rgba(131, 0, 0, 0.76)', lightYellow]
 };
 
 async function play(note) {
@@ -32,42 +31,37 @@ async function play(note) {
   try {
     await soundObject.loadAsync(PianoNoteMap.get(note));
     await soundObject.playAsync();
-
     // Your sound is playing!
   } catch (error) {
     // An error occurred!
   }
 }
 
-export default class PitchScreen extends React.Component {
+const initPlay = async () => { await play('C4'); };
+
+export default class PitchScreen extends Component {
   static navigationOptions = {
   };
 
-  constructor() {
-    super();
-
-    // TODO this is super hacky. This is for demo purpose
-    const initPlay = async () => { await play('C4'); };
-
-    initPlay();
-
-    this.state = {
-      backgroundColor: '#84b0dd',
-      level: 1,
-      noteQuestioned: this._getRandNote(1),
-      successConsequtiveCount: 0,
-      history: [],
-      isLastAnswerCorrect: null,
-      fadeAnim: new Animated.Value(1)
-    };
+  state = {
+    backgroundColor: lightYellow,
+    level: 1,
+    noteQuestioned: this.getRandNote(1),
+    successConsequtiveCount: 0,
+    history: [],
+    fadeAnim: new Animated.Value(1)
   };
 
-  _getRandNote(level) {
+  async componentDidMount() {
+    initPlay();
+  }
+
+  getRandNote(level) {
     const randIdx = Math.floor(Math.random() * level);
     return allNotes[randIdx];
   }
 
-  _handleCorrectAnswer() {
+  handleCorrectAnswer() {
     let newLevel = this.state.level;
     let newSuccessConsequtiveCount = this.state.successConsequtiveCount + 1;
     if (
@@ -84,7 +78,7 @@ export default class PitchScreen extends React.Component {
     };
   }
 
-  _handleWrongAnswer() {
+  handleWrongAnswer() {
     const newLevel = Math.max(this.state.level - 1, 1);
     const newSuccessConsequtiveCount = 0;
     return {
@@ -93,24 +87,23 @@ export default class PitchScreen extends React.Component {
     };
   }
 
-  _getUserOptions(noteQuestioned) {
+  getUserOptions(noteQuestioned) {
     const options = [];
     for (let i = 0; i < this.state.level; i++) {
       const noteOption = allNotes[i];
       options.push(
         <Button
-          onPress={this._handleButtonClick.bind(this, noteQuestioned, noteOption)}
+          onPress={this.handleButtonClick.bind(this, noteQuestioned, noteOption)}
           title={noteOption}
-          color='#841584'
+          color={blue}
           key={noteOption}
         />
       );
     };
-
     return options;
   }
 
-  _handleButtonClick = async (noteQuestioned, noteUserAnswer) => {
+  handleButtonClick = async (noteQuestioned, noteUserAnswer) => {
     const historyRecord = {
       level: this.state.level,
       noteQuestioned,
@@ -119,7 +112,7 @@ export default class PitchScreen extends React.Component {
     const newHistory = this.state.history.concat(historyRecord);
     const isAnswerCorrect = (noteQuestioned === noteUserAnswer);
     const { newLevel, newSuccessConsequtiveCount } = isAnswerCorrect ?
-      this._handleCorrectAnswer() : this._handleWrongAnswer();
+      this.handleCorrectAnswer() : this.handleWrongAnswer();
 
     const fadeAnim = new Animated.Value(0);
     Animated.timing(
@@ -129,7 +122,7 @@ export default class PitchScreen extends React.Component {
         duration: 1000
       }).start();
 
-    const randNote = this._getRandNote(newLevel);
+    const randNote = this.getRandNote(newLevel);
 
     // TODO this is hacky refactor this later.
     setTimeout(async () => {await play(randNote);}, 600);
@@ -141,19 +134,18 @@ export default class PitchScreen extends React.Component {
       noteQuestioned: randNote,
       successConsequtiveCount: newSuccessConsequtiveCount,
       history: newHistory,
-      isLastAnswerCorrect: isAnswerCorrect,
       fadeAnim
     });
   };
 
   render() {
     const { backgroundColor, noteQuestioned } = this.state;
-    const noteOptions = this._getUserOptions(noteQuestioned);
+    const noteOptions = this.getUserOptions(noteQuestioned);
     return (
       <View style={styles.container}>
         <Animated.View style={[styles.container, { backgroundColor }]}>
           <View style={styles.titleContainer}>
-            <Text style={[sanFranciscoWeights.thin, styles.title]}>Master Pitch</Text>
+            <Text style={styles.title}>Master Pitch</Text>
           </View>
           <View style={styles.buttonContainer}>
             {noteOptions}
@@ -163,27 +155,3 @@ export default class PitchScreen extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  title: {
-    color: '#fff',
-    fontSize: 50
-  },
-  titleContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-    paddingTop: 50
-  },
-  displayContainer: {
-    alignItems: 'center',
-    margin: 60
-  },
-  buttonContainer: {
-    alignItems: 'center',
-    marginTop: 30,
-    textAlign: 'center'
-  }
-});

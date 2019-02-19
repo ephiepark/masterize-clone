@@ -13,8 +13,7 @@ import {
   darkBlue,
   blue,
   lightRed,
-  lightYellow,
-  lightGreen
+  lightYellow
 } from '../../styles/Colors';
 
 import styles from './styles';
@@ -23,21 +22,21 @@ const APPS = [
   {
     id: 1,
     name: 'Perfect Pitch',
-    type: 'MUSIC',
+    category: 'MUSIC',
     desc: 'Blind pitch testing and performance tracking',
     color: blue
   },
   {
     id: 2,
     name: 'Golf Swing',
-    type: 'SPORTS',
+    category: 'SPORTS',
     desc: 'Golf swing analysis and auto-suggestion',
     color: lightYellow
   },
   {
     id: 3,
     name: 'Something Else',
-    type: 'SPECIAL',
+    category: 'SPECIAL',
     desc: 'Something great that will impress you',
     color: lightRed
   }
@@ -45,7 +44,6 @@ const APPS = [
 
 const AppListRow = ({
   data,
-  type,
   keyGrid,
   numColumns,
   renderItem
@@ -125,7 +123,7 @@ export default class AppListScreen extends Component {
   };
 
   render() {
-    const { navigate } = this.props.navigation;
+    // const { navigate } = this.props.navigation;
     const {
       isVisible,
       filterType,
