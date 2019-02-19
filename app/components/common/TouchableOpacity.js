@@ -5,7 +5,7 @@ const TouchableOpacityCustom = ({
   activeOpacity = 0.5,
   style = {},
   onPress = () => null,
-  children = null,
+  children = null
 }) => (
   <TouchableOpacity
     activeOpacity={activeOpacity}

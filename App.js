@@ -25,20 +25,20 @@ const HomeTab = createStackNavigator(
         title: TitleHomeTab,
         headerTintColor: '#47525E',
         headerStyle: {
-          backgroundColor: '#ffffff',
-        },
-      },
-    },
+          backgroundColor: '#ffffff'
+        }
+      }
+    }
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Home'
   }
 );
 
 HomeTab.navigationOptions = {
   tabBarIcon: ({ tintColor }) => (
     <Feather name="home" size={20} color={tintColor} />
-  ),
+  )
 };
 
 const TrainTab = createStackNavigator(
@@ -49,20 +49,20 @@ const TrainTab = createStackNavigator(
         title: TitleTrainTab,
         headerTintColor: '#47525E',
         headerStyle: {
-          backgroundColor: '#ffffff',
-        },
-      },
-    },
+          backgroundColor: '#ffffff'
+        }
+      }
+    }
   },
   {
-    initialRouteName: 'Train',
+    initialRouteName: 'Train'
   }
 );
 
 TrainTab.navigationOptions = {
   tabBarIcon: ({ tintColor }) => (
     <Feather name="star" size={20} color={tintColor} />
-  ),
+  )
 };
 
 const SettingsTab = createStackNavigator(
@@ -73,20 +73,20 @@ const SettingsTab = createStackNavigator(
         title: TitleSettingsTab,
         headerTintColor: '#47525E',
         headerStyle: {
-          backgroundColor: '#ffffff',
-        },
-      },
-    },
+          backgroundColor: '#ffffff'
+        }
+      }
+    }
   },
   {
-    initialRouteName: 'Settings',
+    initialRouteName: 'Settings'
   }
 );
 
 SettingsTab.navigationOptions = {
   tabBarIcon: ({ tintColor }) => (
     <Feather name="settings" size={20} color={tintColor} />
-  ),
+  )
 };
 
 const MainNavigator =
@@ -97,22 +97,22 @@ const MainNavigator =
             screen: HomeTab,
             navigationOptions: ({ navigation }) => ({
               title: TitleHomeTab,
-              tabBarVisible: true,
-            }),
+              tabBarVisible: true
+            })
           },
           Train: {
             screen: TrainTab,
             navigationOptions: ({ navigation }) => ({
               title: TitleTrainTab,
-              tabBarVisible: true,
-            }),
+              tabBarVisible: true
+            })
           },
           Settings: {
             screen: SettingsTab,
             navigationOptions: {
-              title: TitleSettingsTab,
-            },
-          },
+              title: TitleSettingsTab
+            }
+          }
         },
         {
           tabBarOptions: {
@@ -121,14 +121,14 @@ const MainNavigator =
             showIcon: true,
             labelStyle: {
               margin: 0,
-              padding: 2,
+              padding: 2
             },
             style: {
-              backgroundColor: '#ffffff',
-            },
+              backgroundColor: '#ffffff'
+            }
           },
           animationEnabled: false,
-          swipeEnabled: false,
+          swipeEnabled: false
         }
       )
     : createMaterialBottomTabNavigator(
@@ -137,22 +137,22 @@ const MainNavigator =
             screen: HomeTab,
             navigationOptions: ({ navigation }) => ({
               title: TitleHomeTab,
-              tabBarVisible: true,
-            }),
+              tabBarVisible: true
+            })
           },
           Train: {
             screen: TrainTab,
             navigationOptions: ({ navigation }) => ({
               title: TitleTrainTab,
-              tabBarVisible: true,
-            }),
+              tabBarVisible: true
+            })
           },
           Settings: {
             screen: SettingsTab,
             navigationOptions: {
-              title: TitleSettingsTab,
-            },
-          },
+              title: TitleSettingsTab
+            }
+          }
         },
         {
           initialRouteName: 'Home',
@@ -162,17 +162,17 @@ const MainNavigator =
           barStyle: {
             backgroundColor: '#ffffff',
             paddingTop: 2,
-            paddingBottom: 2,
-          },
+            paddingBottom: 2
+          }
         }
       );
 
 const AppNavigator = createSwitchNavigator(
   {
-    Main: MainNavigator,
+    Main: MainNavigator
   },
   {
-    initialRouteName: 'Main',
+    initialRouteName: 'Main'
   }
 );
 

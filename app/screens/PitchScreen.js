@@ -20,11 +20,11 @@ const allNotes = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'];
 const SUCCESS_COUNT_FOR_LEVEL_UP = 3;
 const GREEN_INTERPOLATION = {
   inputRange: [0, 0.5, 1],
-  outputRange: ['#84b0dd', 'rgba(0, 255, 0, 1)', '#84b0dd'],
+  outputRange: ['#84b0dd', 'rgba(0, 255, 0, 1)', '#84b0dd']
 };
 const RED_INTERPOLATION = {
   inputRange: [0, 0.5, 1],
-  outputRange: ['#84b0dd', 'rgba(255, 0, 0, 1)', '#84b0dd'],
+  outputRange: ['#84b0dd', 'rgba(255, 0, 0, 1)', '#84b0dd']
 };
 
 async function play(note) {
@@ -58,7 +58,7 @@ export default class PitchScreen extends React.Component {
       successConsequtiveCount: 0,
       history: [],
       isLastAnswerCorrect: null,
-      fadeAnim: new Animated.Value(1),
+      fadeAnim: new Animated.Value(1)
     };
   };
 
@@ -80,7 +80,7 @@ export default class PitchScreen extends React.Component {
 
     return {
       newLevel,
-      newSuccessConsequtiveCount,
+      newSuccessConsequtiveCount
     };
   }
 
@@ -89,7 +89,7 @@ export default class PitchScreen extends React.Component {
     const newSuccessConsequtiveCount = 0;
     return {
       newLevel,
-      newSuccessConsequtiveCount,
+      newSuccessConsequtiveCount
     };
   }
 
@@ -114,7 +114,7 @@ export default class PitchScreen extends React.Component {
     const historyRecord = {
       level: this.state.level,
       noteQuestioned,
-      noteUserAnswer,
+      noteUserAnswer
     };
     const newHistory = this.state.history.concat(historyRecord);
     const isAnswerCorrect = (noteQuestioned === noteUserAnswer);
@@ -126,7 +126,7 @@ export default class PitchScreen extends React.Component {
       fadeAnim,
       {
         toValue: 1,
-        duration: 1000,
+        duration: 1000
       }).start();
 
     const randNote = this._getRandNote(newLevel);
@@ -142,7 +142,7 @@ export default class PitchScreen extends React.Component {
       successConsequtiveCount: newSuccessConsequtiveCount,
       history: newHistory,
       isLastAnswerCorrect: isAnswerCorrect,
-      fadeAnim,
+      fadeAnim
     });
   };
 
@@ -166,24 +166,24 @@ export default class PitchScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   title: {
     color: '#fff',
-    fontSize: 50,
+    fontSize: 50
   },
   titleContainer: {
     alignItems: 'center',
     marginHorizontal: 50,
-    paddingTop: 50,
+    paddingTop: 50
   },
   displayContainer: {
     alignItems: 'center',
-    margin: 60,
+    margin: 60
   },
   buttonContainer: {
     alignItems: 'center',
     marginTop: 30,
-    textAlign: 'center',
-  },
+    textAlign: 'center'
+  }
 });

@@ -14,7 +14,7 @@ import {
   blue,
   lightRed,
   lightYellow,
-  lightGreen,
+  lightGreen
 } from '../../styles/Colors';
 
 import styles from './styles';
@@ -25,22 +25,22 @@ const APPS = [
     name: 'Perfect Pitch',
     type: 'MUSIC',
     desc: 'Blind pitch testing and performance tracking',
-    color: blue,
+    color: blue
   },
   {
     id: 2,
     name: 'Golf Swing',
     type: 'SPORTS',
     desc: 'Golf swing analysis and auto-suggestion',
-    color: lightYellow,
+    color: lightYellow
   },
   {
     id: 3,
     name: 'Something Else',
     type: 'SPECIAL',
     desc: 'Something great that will impress you',
-    color: lightRed,
-  },
+    color: lightRed
+  }
 ];
 
 const AppListRow = ({
@@ -48,7 +48,7 @@ const AppListRow = ({
   type,
   keyGrid,
   numColumns,
-  renderItem,
+  renderItem
 }) => (
   <FlatList
     data={data}
@@ -73,7 +73,7 @@ export default class AppListScreen extends Component {
         >
           <Feather name="filter" size={23} color={darkBlue} />
         </TouchableOpacity>
-      ),
+      )
     };
   };
 
@@ -82,7 +82,7 @@ export default class AppListScreen extends Component {
     filterType: 'popularity.desc',
     filterName: 'Most popular',
     numColumns: 1,
-    keyGrid: 1,
+    keyGrid: 1
   };
 
   async componentDidMount() {
@@ -92,7 +92,7 @@ export default class AppListScreen extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     const {
       isVisible,
-      keyGrid,
+      keyGrid
     } = this.state;
 
     if (
@@ -131,7 +131,7 @@ export default class AppListScreen extends Component {
       filterType,
       filterName,
       numColumns,
-      keyGrid,
+      keyGrid
     } = this.state;
     return (
       <View style={styles.container}>
@@ -143,7 +143,7 @@ export default class AppListScreen extends Component {
             <TouchableOpacity
               style={[
                 styles.buttonGrid,
-                numColumns === 2 && styles.buttonGridActive,
+                numColumns === 2 && styles.buttonGridActive
               ]}
               onPress={this.actionGrid}
             >

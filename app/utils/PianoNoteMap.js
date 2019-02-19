@@ -13,7 +13,7 @@ const noteAudioMap = new Map([
   ['F4', F4],
   ['G4', G4],
   ['A4', A4],
-  ['B4', B4],
+  ['B4', B4]
 ]);
 
 export default noteAudioMap;
