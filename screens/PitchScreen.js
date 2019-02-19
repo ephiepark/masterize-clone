@@ -13,8 +13,8 @@ import {
 } from 'react-native';
 import { sanFranciscoWeights } from 'react-native-typography';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { WebBrowser, Audio } from 'expo';
-import PianoNoteMap from '../piano_note_utils/PianoNoteMap';
+import { WebBrowser } from 'expo';
+import PianoAudioManager from '../piano_note_utils/PianoAudioManager';
 
 const allNotes = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'];
 
@@ -28,17 +28,6 @@ const RED_INTERPOLATION = {
   outputRange: ['#84b0dd', 'rgba(255, 0, 0, 1)', '#84b0dd']
 };
 
-async function play(note) {
-  const soundObject = new Audio.Sound();
-  try {
-    await soundObject.loadAsync(PianoNoteMap.get(note));
-    await soundObject.playAsync();
-    // Your sound is playing!
-  } catch (error) {
-    // An error occurred!
-  }
-}
-
 export default class PitchScreen extends React.Component {
   static navigationOptions = {
   };
@@ -46,8 +35,7 @@ export default class PitchScreen extends React.Component {
   constructor() {
     super();
     // TODO this is super hacky. This is for demo purpose
-    const initPlay = async () => { await play("C4"); };
-    initPlay();
+    PianoAudioManager.playSingleNote("C4");
 
     this.state = {
       backgroundColor: '#84b0dd',
@@ -129,7 +117,7 @@ export default class PitchScreen extends React.Component {
 
     const randNote = this._getRandNote(newLevel);
     // TODO this is hacky refactor this later.
-    setTimeout(async () => {await play(randNote)}, 600);
+    setTimeout(() => {PianoAudioManager.playSingleNote(randNote)}, 600);
     this.setState({
       backgroundColor: isAnswerCorrect ?
         fadeAnim.interpolate(GREEN_INTERPOLATION)
