@@ -7,13 +7,13 @@ const A4 = require('../assets/audios/piano_notes/Piano.mf.A4.aiff');
 const B4 = require('../assets/audios/piano_notes/Piano.mf.B4.aiff');
 
 const noteAudioMap = new Map([
-  ["C4", C4],
-  ["D4", D4],
-  ["E4", E4],
-  ["F4", F4],
-  ["G4", G4],
-  ["A4", A4],
-  ["B4", B4],
+  ['C4', C4],
+  ['D4', D4],
+  ['E4', E4],
+  ['F4', F4],
+  ['G4', G4],
+  ['A4', A4],
+  ['B4', B4],
 ]);
 
 export default noteAudioMap;
