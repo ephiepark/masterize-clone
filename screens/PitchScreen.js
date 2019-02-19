@@ -41,7 +41,6 @@ async function play(note) {
 
 export default class PitchScreen extends React.Component {
   static navigationOptions = {
-    header: null,
   };
 
   constructor() {

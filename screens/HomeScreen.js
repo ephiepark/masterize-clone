@@ -8,13 +8,23 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import { sanFranciscoWeights } from 'react-native-typography';
-import Icon from 'react-native-vector-icons/AntDesign';
 import { WebBrowser } from 'expo';
 
 export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    header: null,
+  static navigationOptions = ({ navigation }) => {
+    const params = navigation.state.params || {};
+    return {
+      headerRight: (
+        <TouchableOpacity
+          style={styles.buttonFilter}
+          onPress={params.actionFilter}
+        >
+          <Feather style={{marginRight: 20}} name="filter" size={23} color='black' />
+        </TouchableOpacity>
+      )
+    };
   };
 
   render() {
@@ -28,13 +38,6 @@ export default class HomeScreen extends React.Component {
 
           <View style={styles.displayContainer}>
             <Text style={[sanFranciscoWeights.thin]}>(DISPLAY)</Text>
-          </View>
-
-          <View style={styles.buttonContainer}>
-            <Icon.Button name="caretright"
-                         backgroundColor="#84b0dd"
-                         color="#fff"
-                         onPress={this._handleButtonClick}/>
           </View>
         </ScrollView>
       </View>
