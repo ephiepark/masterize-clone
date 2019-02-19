@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { sanFranciscoWeights } from 'react-native-typography';
@@ -51,9 +51,9 @@ export default class HomeScreen extends React.Component {
           (Dev Mode)
         </Text>
       );
-    } else {
+    } 
       return null;
-    }
+    
   }
 
   _handleButtonClick = () => {
@@ -66,33 +66,33 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#84b0dd',
+    backgroundColor: '#84b0dd'
   },
   contentContainer: {
-    paddingTop: 30,
+    paddingTop: 30
   },
   developmentModeText: {
     marginBottom: 20,
     color: 'rgba(0,0,0,0.4)',
     fontSize: 14,
     lineHeight: 19,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   title: {
     color: '#fff',
-    fontSize: 50,
+    fontSize: 50
   },
   titleContainer: {
     alignItems: 'center',
-    marginHorizontal: 50,
+    marginHorizontal: 50
   },
   displayContainer: {
     alignItems: 'center',
-    margin: 60,
+    margin: 60
   },
   buttonContainer: {
     alignItems: 'center',
     marginTop: 30,
-    textAlign: 'center',
-  },
+    textAlign: 'center'
+  }
 });

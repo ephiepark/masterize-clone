@@ -30,7 +30,7 @@ const HomeTab = createStackNavigator(
           backgroundColor: '#ffffff'
         }
       }
-    },
+    }
   },
   {
     initialRouteName: 'Home'
@@ -54,7 +54,7 @@ const TrainTab = createStackNavigator(
           backgroundColor: '#ffffff'
         }
       }
-    },
+    }
   },
   {
     initialRouteName: 'Train'
@@ -99,14 +99,14 @@ const MainNavigator =
             screen: HomeTab,
             navigationOptions: ({ navigation }) => ({
               title: TitleHomeTab,
-              tabBarVisible: true,
+              tabBarVisible: true
             })
           },
           Train: {
             screen: TrainTab,
             navigationOptions: ({ navigation }) => ({
               title: TitleTrainTab,
-              tabBarVisible: true,
+              tabBarVisible: true
             })
           },
           Settings: {
@@ -139,14 +139,14 @@ const MainNavigator =
             screen: HomeTab,
             navigationOptions: ({ navigation }) => ({
               title: TitleHomeTab,
-              tabBarVisible: true,
+              tabBarVisible: true
             })
           },
           Train: {
             screen: TrainTab,
             navigationOptions: ({ navigation }) => ({
               title: TitleTrainTab,
-              tabBarVisible: true,
+              tabBarVisible: true
             })
           },
           Settings: {
