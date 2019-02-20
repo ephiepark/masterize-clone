@@ -7,22 +7,20 @@ import {
   createSwitchNavigator
 } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
-
 import { Feather } from '@expo/vector-icons';
 
-import HomeScreen from './screens/HomeScreen';
-import PitchScreen from './screens/PitchScreen';
-import SettingsScreen from './screens/SettingsScreen';
+import AppListScreen from './app/screens/AppListScreen';
+import PitchScreen from './app/screens/PitchScreen';
+import SettingsScreen from './app/screens/SettingsScreen';
 
 const TitleHomeTab = 'Home';
 const TitleTrainTab = 'Train';
-// const TitleHistoryTab = 'History';
 const TitleSettingsTab = 'Settings';
 
 const HomeTab = createStackNavigator(
   {
     Home: {
-      screen: HomeScreen,
+      screen: AppListScreen,
       navigationOptions: {
         title: TitleHomeTab,
         headerTintColor: '#47525E',
