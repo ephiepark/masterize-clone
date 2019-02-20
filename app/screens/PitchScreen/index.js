@@ -5,8 +5,7 @@ import {
   Text,
   View
 } from 'react-native';
-import { Audio } from 'expo';
-import PianoNoteMap from '../../utils/PianoNoteMap';
+import PianoAudioManager from '../../utils/PianoAudioManager';
 import {
   blue,
   lightYellow
@@ -26,19 +25,6 @@ const RED_INTERPOLATION = {
   outputRange: [lightYellow, 'rgba(131, 0, 0, 0.76)', lightYellow]
 };
 
-async function play(note) {
-  const soundObject = new Audio.Sound();
-  try {
-    await soundObject.loadAsync(PianoNoteMap.get(note));
-    await soundObject.playAsync();
-    // Your sound is playing!
-  } catch (error) {
-    // An error occurred!
-  }
-}
-
-const initPlay = async () => { await play('C4'); };
-
 export default class PitchScreen extends Component {
   static navigationOptions = {
   };
@@ -52,8 +38,9 @@ export default class PitchScreen extends Component {
     fadeAnim: new Animated.Value(1)
   };
 
-  async componentDidMount() {
-    initPlay();
+  componentDidMount() {
+    // TODO this is super hacky. This is for demo purpose
+    PianoAudioManager.playSingleNote("C4");
   }
 
   getRandNote(level) {
@@ -125,7 +112,7 @@ export default class PitchScreen extends Component {
     const randNote = this.getRandNote(newLevel);
 
     // TODO this is hacky refactor this later.
-    setTimeout(async () => {await play(randNote);}, 600);
+    setTimeout(() => {PianoAudioManager.playSingleNote(randNote)}, 600);
     this.setState({
       backgroundColor: isAnswerCorrect ?
         fadeAnim.interpolate(GREEN_INTERPOLATION)
