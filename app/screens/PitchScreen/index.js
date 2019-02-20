@@ -137,6 +137,14 @@ export default class PitchScreen extends Component {
           <View style={styles.buttonContainer}>
             {noteOptions}
           </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={() => {PianoAudioManager.playSingleNote(noteQuestioned)}}
+              title="Replay"
+              color={blue}
+              key="Replay"
+            />
+          </View>
         </Animated.View>
       </View>
     );

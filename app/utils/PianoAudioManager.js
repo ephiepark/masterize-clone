@@ -22,28 +22,17 @@ class PianoAudioManager {
     await Promise.all(promises);
   }
 
-  async play(note) {
-    const soundObject = this.pianoAudioMap.get(note);
-    if (soundObject) {
-      // TODO try catch ?
-      await soundObject.playAsync();
-    } else {
-      // TODO error
-    }
-  }
-
-  async stopAll() {
+  async playSingleNote(requestedNote) {
     const promises = [];
-    for (const [_note, soundObject] of this.pianoAudioMap) {
-      promises.push(soundObject.stopAsync());
+    for (const [note, soundObject] of this.pianoAudioMap) {
+      if (requestedNote === note) {
+        promises.push(soundObject.replayAsync());
+      } else {
+        promises.push(soundObject.stopAsync());
+      }
     }
     // TODO try catch ?
     await Promise.all(promises);
-  }
-
-  async playSingleNote(note) {
-    await this.stopAll();
-    await this.play(note);
   }
 }
 
