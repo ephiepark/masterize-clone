@@ -17,7 +17,7 @@ export async function signInWithFacebook() {
       await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);  // Set persistent auth state
       const credential = firebase.auth.FacebookAuthProvider.credential(token);
       const facebookProfileData = await firebase.auth().signInAndRetrieveDataWithCredential(credential);  // Sign in with Facebook credential
-
+      // console.log(facebookProfileData);
       // Do something with Facebook profile data
       // OR you have subscribed to auth state change, authStateChange handler will process the profile data
       return Promise.resolve({type: 'success'});
