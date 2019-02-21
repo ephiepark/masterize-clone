@@ -1,7 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { fontSizeResponsive } from '../../utils/Metrics';
 import {
-  white
+  white,
+  darkBlue
 } from '../../styles/Colors';
 
 const styles = StyleSheet.create({
@@ -28,6 +29,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 30,
     textAlign: 'center'
+  },
+  logInAsFBBtn: {
+    backgroundColor: darkBlue,
   }
 });
 
