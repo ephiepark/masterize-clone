@@ -86,7 +86,7 @@ const LeaderBoardTab = createStackNavigator(
 
 LeaderBoardTab.navigationOptions = {
   tabBarIcon: ({ tintColor }) => (
-    <Feather name="settings" size={20} color={tintColor} />
+    <Feather name="list" size={20} color={tintColor} />
   )
 };
 
