@@ -130,6 +130,15 @@ export default class PitchScreen extends Component {
     signInWithFacebook();
   }
 
+  handleSetRecord = () => {
+    const user = firebase.auth().currentUser;
+    if (user != null) {
+      firebase.database().ref('scores/' + user.displayName).set({
+        score: this.state.level,
+      });
+    }
+  }
+
   render() {
     const { backgroundColor, noteQuestioned } = this.state;
     const noteOptions = this.getUserOptions(noteQuestioned);
@@ -156,6 +165,14 @@ export default class PitchScreen extends Component {
               title="Log In as Facebook"
               color={blue}
               key="login"
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={this.handleSetRecord}
+              title="Set Record"
+              color={blue}
+              key="setRecord"
             />
           </View>
         </Animated.View>

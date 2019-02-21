@@ -12,11 +12,11 @@ import firebase from './app/utils/firebase';
 
 import AppListScreen from './app/screens/AppListScreen';
 import PitchScreen from './app/screens/PitchScreen';
-import SettingsScreen from './app/screens/SettingsScreen';
+import LeaderBoardScreen from './app/screens/LeaderBoardScreen';
 
 const TitleHomeTab = 'Home';
 const TitleTrainTab = 'Train';
-const TitleSettingsTab = 'Settings';
+const TitleLeaderBoardTab = 'LeaderBoard';
 
 const HomeTab = createStackNavigator(
   {
@@ -66,12 +66,12 @@ TrainTab.navigationOptions = {
   )
 };
 
-const SettingsTab = createStackNavigator(
+const LeaderBoardTab = createStackNavigator(
   {
-    Settings: {
-      screen: SettingsScreen,
+    LeaderBoard: {
+      screen: LeaderBoardScreen,
       navigationOptions: {
-        title: TitleSettingsTab,
+        title: TitleLeaderBoardTab,
         headerTintColor: '#47525E',
         headerStyle: {
           backgroundColor: '#ffffff'
@@ -80,11 +80,11 @@ const SettingsTab = createStackNavigator(
     }
   },
   {
-    initialRouteName: 'Settings'
+    initialRouteName: 'LeaderBoard'
   }
 );
 
-SettingsTab.navigationOptions = {
+LeaderBoardTab.navigationOptions = {
   tabBarIcon: ({ tintColor }) => (
     <Feather name="settings" size={20} color={tintColor} />
   )
@@ -108,10 +108,10 @@ const MainNavigator =
               tabBarVisible: true
             })
           },
-          Settings: {
-            screen: SettingsTab,
+          LeaderBoard: {
+            screen: LeaderBoardTab,
             navigationOptions: {
-              title: TitleSettingsTab
+              title: TitleLeaderBoardTab
             }
           }
         },
@@ -148,10 +148,10 @@ const MainNavigator =
               tabBarVisible: true
             })
           },
-          Settings: {
-            screen: SettingsTab,
+          LeaderBoard: {
+            screen: LeaderBoardTab,
             navigationOptions: {
-              title: TitleSettingsTab
+              title: TitleLeaderBoardTab
             }
           }
         },
