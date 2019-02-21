@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import firebase from '../../utils/firebase';
 import NotificationCard from '../../components/cards/NotificationCard';
@@ -33,7 +33,7 @@ export default class LeaderBoardScreen extends Component {
   };
 
   state = {
-    scores: {},
+    scores: null,
   }
 
   componentDidMount() {
@@ -58,6 +58,17 @@ export default class LeaderBoardScreen extends Component {
   }
 
   render() {
+    const loading = this.state.scores === null;
+    if (loading) {
+      return (
+        <View style={styles.container}>
+          <View style={styles.containerList}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        </View>
+      )
+    }
+
     return (
       <View style={styles.container}>
         <View style={styles.containerList}>

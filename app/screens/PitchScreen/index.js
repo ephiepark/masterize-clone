@@ -142,6 +142,7 @@ export default class PitchScreen extends Component {
   render() {
     const { backgroundColor, noteQuestioned } = this.state;
     const noteOptions = this.getUserOptions(noteQuestioned);
+    const loggedIn = firebase.auth().currentUser !== null;
     return (
       <View style={styles.container}>
         <Animated.View style={[styles.container, { backgroundColor }]}>
@@ -161,6 +162,7 @@ export default class PitchScreen extends Component {
           </View>
           <View style={styles.buttonContainer}>
             <Button
+              style={styles.logInAsFBBtn}
               onPress={this.handleLoginAsFB}
               title="Log In as Facebook"
               color={blue}
@@ -173,6 +175,7 @@ export default class PitchScreen extends Component {
               title="Set Record"
               color={blue}
               key="setRecord"
+              disabled={!loggedIn}
             />
           </View>
         </Animated.View>
