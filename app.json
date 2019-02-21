@@ -4,7 +4,10 @@
     "slug": "masterize",
     "privacy": "public",
     "sdkVersion": "31.0.0",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./app/assets/images/icon.png",
@@ -16,9 +19,19 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "supportsTablet": true
-    }
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "extra": {
+      "firebase": {
+        "apiKey": "AIzaSyDuA8FIDgS3uwF07SSmTFF7mob37OUDFtg",
+        "authDomain": "masterize-f686c.firebaseapp.com",
+        "databaseURL": "https://masterize-f686c.firebaseio.com",
+        "projectId": "masterize-f686c",
+        "storageBucket": "masterize-f686c.appspot.com",
+        "messagingSenderId": "1023683379211"
+      }
+    },
+    "facebookAppId": "598299683916373",
   }
 }

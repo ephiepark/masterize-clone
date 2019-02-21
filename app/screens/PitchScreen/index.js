@@ -6,11 +6,12 @@ import {
   View
 } from 'react-native';
 import PianoAudioManager from '../../utils/PianoAudioManager';
+import firebase from '../../utils/firebase';
+import { signInWithFacebook } from '../../utils/auth';
 import {
   blue,
   lightYellow
 } from '../../styles/Colors';
-
 import styles from './styles';
 
 const allNotes = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'];
@@ -125,6 +126,10 @@ export default class PitchScreen extends Component {
     });
   };
 
+  handleLoginAsFB = () => {
+    signInWithFacebook();
+  }
+
   render() {
     const { backgroundColor, noteQuestioned } = this.state;
     const noteOptions = this.getUserOptions(noteQuestioned);
@@ -143,6 +148,14 @@ export default class PitchScreen extends Component {
               title="Replay"
               color={blue}
               key="Replay"
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={this.handleLoginAsFB}
+              title="Log In as Facebook"
+              color={blue}
+              key="login"
             />
           </View>
         </Animated.View>

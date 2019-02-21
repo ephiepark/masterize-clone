@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Asset } from 'expo';
 import { View, Text, FlatList } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { Assets as StackAssets } from 'react-navigation-stack';
 
 import NotificationCard from '../../components/cards/NotificationCard';
 import FilterModal from '../../components/modals/FilterModal';
@@ -82,10 +80,6 @@ export default class AppListScreen extends Component {
     numColumns: 1,
     keyGrid: 1
   };
-
-  async componentDidMount() {
-    Asset.loadAsync(StackAssets);
-  }
 
   shouldComponentUpdate(nextProps, nextState) {
     const {

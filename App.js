@@ -8,6 +8,7 @@ import {
 } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { Feather } from '@expo/vector-icons';
+import firebase from './app/utils/firebase';
 
 import AppListScreen from './app/screens/AppListScreen';
 import PitchScreen from './app/screens/PitchScreen';
