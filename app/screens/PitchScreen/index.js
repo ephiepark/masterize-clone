@@ -3,7 +3,9 @@ import {
   Animated,
   Button,
   Text,
-  View
+  TextInput,
+  View,
+  ScrollView
 } from 'react-native';
 import PianoAudioManager from '../../utils/PianoAudioManager';
 import firebase from '../../utils/firebase';
@@ -36,7 +38,8 @@ export default class PitchScreen extends Component {
     noteQuestioned: this.getRandNote(1),
     successConsequtiveCount: 0,
     history: [],
-    fadeAnim: new Animated.Value(1)
+    fadeAnim: new Animated.Value(1),
+    name: '',
   };
 
   componentDidMount() {
@@ -124,6 +127,7 @@ export default class PitchScreen extends Component {
       history: newHistory,
       fadeAnim
     });
+    this.handleSetRecord();
   };
 
   handleLoginAsFB = () => {
@@ -132,52 +136,53 @@ export default class PitchScreen extends Component {
 
   handleSetRecord = () => {
     const user = firebase.auth().currentUser;
-    if (user != null) {
-      firebase.database().ref('scores/' + user.displayName).set({
-        score: this.state.level,
-      });
+    // const name = user !== null ? user.displayName : this.state.name;
+    if (user === null && this.state.name === '') {
+      return;
     }
+    firebase.database().ref('scores/' + this.state.name).set({
+      score: this.state.level,
+    });
   }
 
   render() {
     const { backgroundColor, noteQuestioned } = this.state;
     const noteOptions = this.getUserOptions(noteQuestioned);
-    const loggedIn = firebase.auth().currentUser !== null;
     return (
       <View style={styles.container}>
         <Animated.View style={[styles.container, { backgroundColor }]}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>Master Pitch</Text>
-          </View>
-          <View style={styles.buttonContainer}>
-            {noteOptions}
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              onPress={() => {PianoAudioManager.playSingleNote(noteQuestioned)}}
-              title="Replay"
-              color={blue}
-              key="Replay"
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              style={styles.logInAsFBBtn}
-              onPress={this.handleLoginAsFB}
-              title="Log In as Facebook"
-              color={blue}
-              key="login"
-            />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              onPress={this.handleSetRecord}
-              title="Set Record"
-              color={blue}
-              key="setRecord"
-              disabled={!loggedIn}
-            />
-          </View>
+          <ScrollView>
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>Master Pitch</Text>
+            </View>
+            <View style={styles.buttonContainer}>
+              <TextInput
+                style={{height: 40, width: 80, borderColor: 'gray', borderBottomWidth: 1}}
+                onChangeText={(name) => this.setState({name})}
+                value={this.state.name}
+              />
+            </View>
+            <View style={styles.buttonContainer}>
+              {noteOptions}
+            </View>
+            <View style={styles.buttonContainer}>
+              <Button
+                onPress={() => {PianoAudioManager.playSingleNote(noteQuestioned)}}
+                title="Replay"
+                color={blue}
+                key="Replay"
+              />
+            </View>
+            <View style={styles.buttonContainer}>
+              <Button
+                style={styles.logInAsFBBtn}
+                onPress={this.handleLoginAsFB}
+                title="Log In as Facebook"
+                color={blue}
+                key="login"
+              />
+            </View>
+          </ScrollView>
         </Animated.View>
       </View>
     );
