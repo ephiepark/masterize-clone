@@ -16,6 +16,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: white
   },
+  subtitle: {
+    fontSize: fontSizeResponsive(2),
+    fontWeight: 'bold',
+    color: white
+  },
   titleContainer: {
     alignItems: 'center',
     marginHorizontal: 50,

@@ -40,11 +40,16 @@ export default class PitchScreen extends Component {
     history: [],
     fadeAnim: new Animated.Value(1),
     name: '',
+    score: 0,
   };
 
   componentDidMount() {
     // TODO this is super hacky. This is for demo purpose
     PianoAudioManager.playSingleNote("C4");
+    const user = firebase.auth().currentUser;
+    if (user !== null) {
+      this.setState({ name: user.displayName });
+    }
   }
 
   getRandNote(level) {
@@ -64,6 +69,7 @@ export default class PitchScreen extends Component {
     };
 
     return {
+      score: this.state.score + 1,
       newLevel,
       newSuccessConsequtiveCount
     };
@@ -73,6 +79,7 @@ export default class PitchScreen extends Component {
     const newLevel = Math.max(this.state.level - 1, 1);
     const newSuccessConsequtiveCount = 0;
     return {
+      score: 0,
       newLevel,
       newSuccessConsequtiveCount
     };
@@ -102,7 +109,8 @@ export default class PitchScreen extends Component {
     };
     const newHistory = this.state.history.concat(historyRecord);
     const isAnswerCorrect = (noteQuestioned === noteUserAnswer);
-    const { newLevel, newSuccessConsequtiveCount } = isAnswerCorrect ?
+
+    const { score, newLevel, newSuccessConsequtiveCount } = isAnswerCorrect ?
       this.handleCorrectAnswer() : this.handleWrongAnswer();
 
     const fadeAnim = new Animated.Value(0);
@@ -118,6 +126,7 @@ export default class PitchScreen extends Component {
     // TODO this is hacky refactor this later.
     setTimeout(() => {PianoAudioManager.playSingleNote(randNote)}, 600);
     this.setState({
+      score,
       backgroundColor: isAnswerCorrect ?
         fadeAnim.interpolate(GREEN_INTERPOLATION)
         : fadeAnim.interpolate(RED_INTERPOLATION),
@@ -132,21 +141,22 @@ export default class PitchScreen extends Component {
 
   handleLoginAsFB = () => {
     signInWithFacebook();
+    this.setState({name: firebase.auth().currentUser.displayName});
   }
 
   handleSetRecord = () => {
     const user = firebase.auth().currentUser;
-    // const name = user !== null ? user.displayName : this.state.name;
-    if (user === null && this.state.name === '') {
+    const name = user !== null ? user.displayName : this.state.name;
+    if (name === '') {
       return;
     }
-    firebase.database().ref('scores/' + this.state.name).set({
-      score: this.state.level,
+    firebase.database().ref('scores/' + name).set({
+      score: this.state.score,
     });
   }
 
   render() {
-    const { backgroundColor, noteQuestioned } = this.state;
+    const { backgroundColor, noteQuestioned, score } = this.state;
     const noteOptions = this.getUserOptions(noteQuestioned);
     return (
       <View style={styles.container}>
@@ -157,10 +167,13 @@ export default class PitchScreen extends Component {
             </View>
             <View style={styles.buttonContainer}>
               <TextInput
-                style={{height: 40, width: 80, borderColor: 'gray', borderBottomWidth: 1}}
-                onChangeText={(name) => this.setState({name})}
+                style={{height: 40, alignItems: 'center', width: 150, borderColor: 'gray', borderBottomWidth: 1}}
+                onChangeText={(name) => this.setState({ name })}
                 value={this.state.name}
               />
+            </View>
+            <View style={styles.titleContainer}>
+              <Text style={styles.subtitle}>Score: {score}</Text>
             </View>
             <View style={styles.buttonContainer}>
               {noteOptions}
