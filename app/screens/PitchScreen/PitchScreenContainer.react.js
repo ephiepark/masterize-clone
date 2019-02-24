@@ -1,5 +1,12 @@
 import { connect } from 'react-redux';
-import { setScore, setLevel, addHistory, initRound } from './actions';
+import {
+  setScore,
+  incrementLevel,
+  decrementLevel,
+  addHistory,
+  initRound,
+  handleUserAnswer
+} from './actions';
 import PitchScreen from './PitchScreen.react';
 
 const mapStateToProps = state => {
@@ -16,14 +23,20 @@ const mapDispatchToProps = dispatch => {
     onScoreChange: score => {
       dispatch(setScore(score));
     },
-    onLevelChange: level => {
-      dispatch(setLevel(level));
+    onIncrementLevel: () => {
+      dispatch(incrementLevel());
+    },
+    onDecrementLevel: () => {
+      dispatch(decrementLevel());
     },
     onHistoryRecord: historyRecord => {
       dispatch(addHistory(historyRecord));
     },
     onReadyForRound: () => {
       dispatch(initRound());
+    },
+    onUserAnswer: noteUserAnswer => {
+      dispatch(handleUserAnswer(noteUserAnswer));
     }
   };
 };

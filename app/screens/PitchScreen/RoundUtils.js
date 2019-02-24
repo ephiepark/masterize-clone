@@ -1,4 +1,4 @@
-const allNotes = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'];
+import {allNotes} from './constants';
 
 export function getNoteQuestionedAndOptions(level, history) {
   const randIdx = Math.floor(Math.random() * level);

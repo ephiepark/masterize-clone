@@ -16,11 +16,6 @@ import {
 } from '../../styles/Colors';
 import styles from './styles';
 
-const HistoryUtils = require('./HistoryUtils');
-
-const allNotes = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'];
-
-const SUCCESS_COUNT_FOR_LEVEL_UP = 3;
 const GREEN_INTERPOLATION = {
   inputRange: [0, 0.5, 1],
   outputRange: [lightYellow, 'rgba(22, 173, 22, 0.71)', lightYellow]
@@ -65,46 +60,28 @@ export default class PitchScreen extends Component {
     }
   }
 
-  handleSetRecord = () => {
-    const user = firebase.auth().currentUser;
-    const name = user !== null ? user.displayName : this.state.name;
-    if (name === '') {
-      return;
-    }
-    firebase.database().ref(`scores/${  name}`).set({
-      score: this.props.score
-    });
-  }
-
   handleLoginAsFB = () => {
     signInWithFacebook();
     this.setState({name: firebase.auth().currentUser.displayName});
   }
 
-  handleCorrectAnswer() {
-    let newLevel = this.props.level;
-    const newSuccessConsequtiveCount = HistoryUtils.getConsequtiveSuccessCount(this.props.history) + 1;
-    if (
-      newSuccessConsequtiveCount > 0 &&
-      newSuccessConsequtiveCount % SUCCESS_COUNT_FOR_LEVEL_UP === 0 &&
-      this.props.level + 1 <= allNotes.length
-    ) {
-      newLevel = this.props.level + 1;
-    };
-
-    return {
-      score: this.props.score + 1,
-      newLevel
-    };
-  }
-
-  handleWrongAnswer() {
-    const newLevel = Math.max(this.props.level - 1, 1);
-    return {
-      score: 0,
-      newLevel
-    };
-  }
+  handleButtonClick = async (noteQuestioned, noteUserAnswer) => {
+    this.props.onUserAnswer(noteUserAnswer);
+    const isAnswerCorrect = noteQuestioned === noteUserAnswer;
+    const fadeAnim = new Animated.Value(0);
+    Animated.timing(
+      fadeAnim,
+      {
+        toValue: 1,
+        duration: 1000
+      }).start();
+    this.setState({
+      backgroundColor: isAnswerCorrect ?
+        fadeAnim.interpolate(GREEN_INTERPOLATION)
+        : fadeAnim.interpolate(RED_INTERPOLATION)
+    });
+    this.handleSetRecord();
+  };
 
   getUserOptions(noteOptions, noteQuestioned) {
     const options = [];
@@ -121,36 +98,16 @@ export default class PitchScreen extends Component {
     return options;
   }
 
-  handleButtonClick = async (noteQuestioned, noteUserAnswer) => {
-    const historyRecord = {
-      level: this.props.level,
-      noteQuestioned,
-      noteUserAnswer
-    };
-    this.props.onHistoryRecord(historyRecord);
-    const isAnswerCorrect = (noteQuestioned === noteUserAnswer);
-
-    const { score, newLevel } = isAnswerCorrect ?
-      this.handleCorrectAnswer() : this.handleWrongAnswer();
-
-    const fadeAnim = new Animated.Value(0);
-    Animated.timing(
-      fadeAnim,
-      {
-        toValue: 1,
-        duration: 1000
-      }).start();
-
-    this.props.onScoreChange(score);
-    this.props.onLevelChange(newLevel);
-    this.props.onReadyForRound();
-    this.setState({
-      backgroundColor: isAnswerCorrect ?
-        fadeAnim.interpolate(GREEN_INTERPOLATION)
-        : fadeAnim.interpolate(RED_INTERPOLATION)
+  handleSetRecord = () => {
+    const user = firebase.auth().currentUser;
+    const name = user !== null ? user.displayName : this.state.name;
+    if (name === '') {
+      return;
+    }
+    firebase.database().ref(`scores/${  name}`).set({
+      score: this.props.score
     });
-    this.handleSetRecord();
-  };
+  }
 
   render() {
     const { backgroundColor } = this.state;
@@ -176,7 +133,8 @@ export default class PitchScreen extends Component {
             </View>
             <View style={styles.titleContainer}>
               <Text style={styles.subtitle}>
-Score:
+                Score:
+                {' '}
                 {score}
               </Text>
             </View>
