@@ -1,10 +1,5 @@
 import { combineReducers } from 'redux';
-import {
-  SET_SCORE,
-  SET_LEVEL,
-  ADD_HISTORY,
-  INIT_ROUND
-} from './actions';
+import { SET_SCORE, SET_LEVEL, ADD_HISTORY, SET_ROUND } from './actions';
 
 function score(state = 0, action) {
   switch (action.type) {
@@ -13,7 +8,7 @@ function score(state = 0, action) {
     default:
       return state;
   }
-};
+}
 
 function level(state = 1, action) {
   switch (action.type) {
@@ -31,20 +26,16 @@ function history(state = [], action) {
     default:
       return state;
   }
-};
+}
 
 function round(state = {}, action) {
   switch (action.type) {
-    case INIT_ROUND:
-      return {
-        noteOptions: action.payload.noteOptions,
-        noteQuestioned: action.payload.noteQuestioned,
-        roundId: action.payload.roundId
-      };
+    case SET_ROUND:
+      return action.payload.round;
     default:
       return state;
   }
-};
+}
 
 const pitchApp = combineReducers({
   score,
