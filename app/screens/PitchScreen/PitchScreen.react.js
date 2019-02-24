@@ -18,8 +18,6 @@ import styles from './styles';
 
 const HistoryUtils = require('./HistoryUtils');
 
-const allNotes = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'];
-
 const SUCCESS_COUNT_FOR_LEVEL_UP = 3;
 const GREEN_INTERPOLATION = {
   inputRange: [0, 0.5, 1],
@@ -82,27 +80,24 @@ export default class PitchScreen extends Component {
   }
 
   handleCorrectAnswer() {
-    let newLevel = this.props.level;
-    const newSuccessConsequtiveCount = HistoryUtils.getConsequtiveSuccessCount(this.props.history) + 1;
+    const newSuccessConsequtiveCount =
+      HistoryUtils.getConsequtiveSuccessCount(this.props.history) + 1;
     if (
       newSuccessConsequtiveCount > 0 &&
-      newSuccessConsequtiveCount % SUCCESS_COUNT_FOR_LEVEL_UP === 0 &&
-      this.props.level + 1 <= allNotes.length
+      newSuccessConsequtiveCount % SUCCESS_COUNT_FOR_LEVEL_UP === 0
     ) {
-      newLevel = this.props.level + 1;
+      this.props.onIncrementLevel();
     };
 
     return {
-      score: this.props.score + 1,
-      newLevel
+      score: this.props.score + 1
     };
   }
 
   handleWrongAnswer() {
-    const newLevel = Math.max(this.props.level - 1, 1);
+    this.props.onDecrementLevel();
     return {
-      score: 0,
-      newLevel
+      score: 0
     };
   }
 
@@ -130,7 +125,7 @@ export default class PitchScreen extends Component {
     this.props.onHistoryRecord(historyRecord);
     const isAnswerCorrect = (noteQuestioned === noteUserAnswer);
 
-    const { score, newLevel } = isAnswerCorrect ?
+    const { score } = isAnswerCorrect ?
       this.handleCorrectAnswer() : this.handleWrongAnswer();
 
     const fadeAnim = new Animated.Value(0);
@@ -142,7 +137,6 @@ export default class PitchScreen extends Component {
       }).start();
 
     this.props.onScoreChange(score);
-    this.props.onLevelChange(newLevel);
     this.props.onReadyForRound();
     this.setState({
       backgroundColor: isAnswerCorrect ?
@@ -176,7 +170,8 @@ export default class PitchScreen extends Component {
             </View>
             <View style={styles.titleContainer}>
               <Text style={styles.subtitle}>
-Score:
+                Score: 
+                {' '}
                 {score}
               </Text>
             </View>

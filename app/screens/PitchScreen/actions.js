@@ -29,6 +29,24 @@ export function setRound(round) {
   return { type: SET_ROUND, payload: { round } };
 }
 
+// Thunk
+
+export function incrementLevel() {
+  return (dispatch, getState) => {
+    const { level } = getState();
+    const maxLevel = RoundUtils.getMaxLevel();
+    dispatch(setLevel(Math.min(level + 1, maxLevel)));
+  };
+}
+
+export function decrementLevel() {
+  return (dispatch, getState) => {
+    const { level } = getState();
+    const minLevel = RoundUtils.getMinLevel();
+    dispatch(setLevel(Math.max(level - 1, minLevel)));
+  };
+}
+
 export function initRound() {
   return (dispatch, getState) => {
     const { level, history } = getState();

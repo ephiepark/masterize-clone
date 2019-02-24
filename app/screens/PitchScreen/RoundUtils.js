@@ -6,3 +6,11 @@ export function getNoteQuestionedAndOptions(level, history) {
   const noteOptions = allNotes.slice(0, level);
   return {noteOptions, noteQuestioned};
 };
+
+export function getMaxLevel() {
+  return allNotes.length;
+}
+
+export function getMinLevel() {
+  return 1;
+}
