@@ -4,7 +4,8 @@ import {
   incrementLevel,
   decrementLevel,
   addHistory,
-  initRound
+  initRound,
+  handleUserAnswer
 } from './actions';
 import PitchScreen from './PitchScreen.react';
 
@@ -33,6 +34,9 @@ const mapDispatchToProps = dispatch => {
     },
     onReadyForRound: () => {
       dispatch(initRound());
+    },
+    onUserAnswer: noteUserAnswer => {
+      dispatch(handleUserAnswer(noteUserAnswer));
     }
   };
 };

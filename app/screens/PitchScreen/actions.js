@@ -1,4 +1,7 @@
+import { maxLevel, minLevel, successCountForLevelUp } from './constants';
+
 const RoundUtils = require('./RoundUtils');
+const HistoryUtils = require('./HistoryUtils');
 
 /*
  * action types
@@ -34,7 +37,6 @@ export function setRound(round) {
 export function incrementLevel() {
   return (dispatch, getState) => {
     const { level } = getState();
-    const maxLevel = RoundUtils.getMaxLevel();
     dispatch(setLevel(Math.min(level + 1, maxLevel)));
   };
 }
@@ -42,7 +44,6 @@ export function incrementLevel() {
 export function decrementLevel() {
   return (dispatch, getState) => {
     const { level } = getState();
-    const minLevel = RoundUtils.getMinLevel();
     dispatch(setLevel(Math.max(level - 1, minLevel)));
   };
 }
@@ -50,12 +51,39 @@ export function decrementLevel() {
 export function initRound() {
   return (dispatch, getState) => {
     const { level, history } = getState();
-
     const {
       noteOptions,
       noteQuestioned
     } = RoundUtils.getNoteQuestionedAndOptions(level, history);
     const roundId = history.length;
     dispatch(setRound({ noteOptions, noteQuestioned, roundId }));
+  };
+}
+
+export function handleUserAnswer(noteUserAnswer) {
+  return (dispatch, getState) => {
+    const { level, history, round, score } = getState();
+    const { noteQuestioned } = round;
+    const historyRecord = { level, noteQuestioned, noteUserAnswer };
+    dispatch(addHistory(historyRecord));
+    const isCorrect = noteQuestioned === noteUserAnswer;
+    let newScore = 0;
+    if (isCorrect) {
+      const newSuccessConsequtiveCount =
+        HistoryUtils.getConsequtiveSuccessCount(history) + 1;
+      if (
+        newSuccessConsequtiveCount > 0 &&
+        newSuccessConsequtiveCount % successCountForLevelUp === 0
+      ) {
+        dispatch(incrementLevel());
+      };
+
+      newScore = score + 1;
+    } else {
+      dispatch(decrementLevel());
+      newScore = 0;
+    }
+    dispatch(setScore(newScore));
+    dispatch(initRound());
   };
 }
