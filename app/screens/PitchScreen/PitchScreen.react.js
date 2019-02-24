@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import PianoAudioManager from '../../utils/PianoAudioManager';
 import firebase from '../../utils/firebase';
-import { signInWithFacebook } from '../../utils/auth';
 import {
   blue,
   lightYellow
@@ -49,11 +48,6 @@ export default class PitchScreen extends Component {
     }
   }
 
-  handleLoginAsFB = () => {
-    signInWithFacebook();
-    this.setState({name: firebase.auth().currentUser.displayName});
-  }
-
   handleButtonClick = (noteQuestioned, noteUserAnswer) => {
     this.props.onUserAnswer(noteUserAnswer);
     const isAnswerCorrect = noteQuestioned === noteUserAnswer;
@@ -78,7 +72,7 @@ export default class PitchScreen extends Component {
     if (name === '') {
       return;
     }
-    firebase.database().ref(`scores/${  name}`).set({
+    firebase.database().ref(`scores/${name}`).set({
       score: this.props.score
     });
   }
@@ -129,15 +123,6 @@ export default class PitchScreen extends Component {
                 title="Replay"
                 color={blue}
                 key="Replay"
-              />
-            </View>
-            <View style={styles.buttonContainer}>
-              <Button
-                style={styles.logInAsFBBtn}
-                onPress={this.handleLoginAsFB}
-                title="Log In as Facebook"
-                color={blue}
-                key="login"
               />
             </View>
           </ScrollView>

@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { SET_SCORE, SET_LEVEL, ADD_HISTORY, SET_ROUND } from './actions';
+import { SET_SCORE, SET_LEVEL, ADD_HISTORY, SET_ROUND } from '../actions/pitchActions';
 
 function score(state = 0, action) {
   switch (action.type) {
@@ -37,11 +37,11 @@ function round(state = {}, action) {
   }
 }
 
-const pitchApp = combineReducers({
+const pitchReducer = combineReducers({
   score,
   level,
   history,
   round
 });
 
-export default pitchApp;
+export default pitchReducer;

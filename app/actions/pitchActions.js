@@ -1,7 +1,7 @@
-import { maxLevel, minLevel, successCountForLevelUp } from './constants';
+import { maxLevel, minLevel, successCountForLevelUp } from '../constants/constants';
 
-const RoundUtils = require('./RoundUtils');
-const HistoryUtils = require('./HistoryUtils');
+const RoundUtils = require('../utils/RoundUtils');
+const HistoryUtils = require('../utils/HistoryUtils');
 
 /*
  * action types
@@ -36,21 +36,21 @@ export function setRound(round) {
 
 export function incrementLevel() {
   return (dispatch, getState) => {
-    const { level } = getState();
+    const { level } = getState().pitch;
     dispatch(setLevel(Math.min(level + 1, maxLevel)));
   };
 }
 
 export function decrementLevel() {
   return (dispatch, getState) => {
-    const { level } = getState();
+    const { level } = getState().pitch;
     dispatch(setLevel(Math.max(level - 1, minLevel)));
   };
 }
 
 export function initRound() {
   return (dispatch, getState) => {
-    const { level, history } = getState();
+    const { level, history } = getState().pitch;
     const {
       noteOptions,
       noteQuestioned
@@ -62,7 +62,7 @@ export function initRound() {
 
 export function handleUserAnswer(noteUserAnswer) {
   return (dispatch, getState) => {
-    const { level, history, round, score } = getState();
+    const { level, history, round, score } = getState().pitch;
     const { noteQuestioned } = round;
     const historyRecord = { level, noteQuestioned, noteUserAnswer };
     dispatch(addHistory(historyRecord));

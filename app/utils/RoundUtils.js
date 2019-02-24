@@ -1,4 +1,4 @@
-import {allNotes} from './constants';
+import {allNotes} from '../constants/constants';
 
 export function getNoteQuestionedAndOptions(level, history) {
   const randIdx = Math.floor(Math.random() * level);

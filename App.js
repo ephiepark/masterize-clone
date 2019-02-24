@@ -13,10 +13,12 @@ import firebase from './app/utils/firebase';
 import AppListScreen from './app/screens/AppListScreen';
 import PitchScreenApp from './app/screens/PitchScreen';
 import LeaderBoardScreen from './app/screens/LeaderBoardScreen';
+import ProfileScreen from './app/screens/ProfileScreen';
 
 const TitleHomeTab = 'Home';
 const TitleTrainTab = 'Train';
 const TitleLeaderBoardTab = 'LeaderBoard';
+const TitleProfileTab = 'Profile';
 
 const HomeTab = createStackNavigator(
   {
@@ -90,6 +92,30 @@ LeaderBoardTab.navigationOptions = {
   )
 };
 
+const ProfileTab = createStackNavigator(
+  {
+    Profile: {
+      screen: ProfileScreen,
+      navigationOptions: {
+        title: TitleProfileTab,
+        headerTintColor: '#47525E',
+        headerStyle: {
+          backgroundColor: '#ffffff'
+        }
+      }
+    }
+  },
+  {
+    initialRouteName: 'Profile'
+  }
+);
+
+ProfileTab.navigationOptions = {
+  tabBarIcon: ({ tintColor }) => (
+    <Feather name="user" size={20} color={tintColor} />
+  )
+};
+
 const MainNavigator =
   Platform.OS === 'ios'
     ? createBottomTabNavigator(
@@ -112,6 +138,12 @@ const MainNavigator =
             screen: LeaderBoardTab,
             navigationOptions: {
               title: TitleLeaderBoardTab
+            }
+          },
+          Profile: {
+            screen: ProfileTab,
+            navigationOptions: {
+              title: TitleProfileTab
             }
           }
         },
@@ -152,6 +184,12 @@ const MainNavigator =
             screen: LeaderBoardTab,
             navigationOptions: {
               title: TitleLeaderBoardTab
+            }
+          },
+          Profile: {
+            screen: ProfileTab,
+            navigationOptions: {
+              title: TitleProfileTab
             }
           }
         },

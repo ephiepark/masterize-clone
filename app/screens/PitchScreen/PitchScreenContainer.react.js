@@ -1,14 +1,17 @@
 import { connect } from 'react-redux';
-import { initRound, handleUserAnswer } from './actions';
+import {
+  initRound,
+  handleUserAnswer
+} from '../../actions/pitchActions';
 import PitchScreen from './PitchScreen.react';
 
 const mapStateToProps = state => {
   return {
-    score: state.score,
-    level: state.level,
-    history: state.history,
-    round: state.round
-  };
+    score: state.pitch.score,
+    level: state.pitch.level,
+    history: state.pitch.history,
+    round: state.pitch.round
+  }
 };
 
 const mapDispatchToProps = dispatch => {
