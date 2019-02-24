@@ -29,18 +29,6 @@ export default class PitchScreen extends Component {
   static navigationOptions = {
   };
 
-  /*
-  props: {
-    score: number,
-    level: number,
-    history: Array<HistoryRecord>,
-    onScoreChange: (number) => void,
-    onLevelChange: (number) => void,
-    onHistoryRecord: (HistoryRecord) => void,
-    onReadyForRound: () => void,
-  };
-  */
-
   state = {
     backgroundColor: lightYellow,
     name: ''
