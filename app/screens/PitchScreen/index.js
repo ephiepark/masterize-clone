@@ -1,203 +1,22 @@
-import React, { Component } from 'react';
-import {
-  Animated,
-  Button,
-  Text,
-  TextInput,
-  View,
-  ScrollView
-} from 'react-native';
-import PianoAudioManager from '../../utils/PianoAudioManager';
-import firebase from '../../utils/firebase';
-import { signInWithFacebook } from '../../utils/auth';
-import {
-  blue,
-  lightYellow
-} from '../../styles/Colors';
-import styles from './styles';
+import React from 'react';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunkMiddleware from 'redux-thunk';
 
-const allNotes = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'];
+import pitchApp from './reducers';
+import PitchScreenContainer from './PitchScreenContainer.react';
 
-const SUCCESS_COUNT_FOR_LEVEL_UP = 3;
-const GREEN_INTERPOLATION = {
-  inputRange: [0, 0.5, 1],
-  outputRange: [lightYellow, 'rgba(22, 173, 22, 0.71)', lightYellow]
+const store = createStore(
+  pitchApp,
+  applyMiddleware(
+    thunkMiddleware, // lets us dispatch() functions
+  )
+);
+
+export default function PitchScreenApp() {
+  return (
+    <Provider store={store}>
+      <PitchScreenContainer />
+    </Provider>
+  );
 };
-const RED_INTERPOLATION = {
-  inputRange: [0, 0.5, 1],
-  outputRange: [lightYellow, 'rgba(131, 0, 0, 0.76)', lightYellow]
-};
-
-export default class PitchScreen extends Component {
-  static navigationOptions = {
-  };
-
-  state = {
-    backgroundColor: lightYellow,
-    level: 1,
-    noteQuestioned: this.getRandNote(1),
-    successConsequtiveCount: 0,
-    history: [],
-    fadeAnim: new Animated.Value(1),
-    name: '',
-    score: 0,
-  };
-
-  componentDidMount() {
-    // TODO this is super hacky. This is for demo purpose
-    PianoAudioManager.playSingleNote("C4");
-    const user = firebase.auth().currentUser;
-    if (user !== null) {
-      this.setState({ name: user.displayName });
-    }
-  }
-
-  getRandNote(level) {
-    const randIdx = Math.floor(Math.random() * level);
-    return allNotes[randIdx];
-  }
-
-  handleCorrectAnswer() {
-    let newLevel = this.state.level;
-    let newSuccessConsequtiveCount = this.state.successConsequtiveCount + 1;
-    if (
-      newSuccessConsequtiveCount === SUCCESS_COUNT_FOR_LEVEL_UP &&
-      this.state.level + 1 <= allNotes.length
-    ) {
-      newLevel = this.state.level + 1;
-      newSuccessConsequtiveCount = 0;
-    };
-
-    return {
-      score: this.state.score + 1,
-      newLevel,
-      newSuccessConsequtiveCount
-    };
-  }
-
-  handleWrongAnswer() {
-    const newLevel = Math.max(this.state.level - 1, 1);
-    const newSuccessConsequtiveCount = 0;
-    return {
-      score: 0,
-      newLevel,
-      newSuccessConsequtiveCount
-    };
-  }
-
-  getUserOptions(noteQuestioned) {
-    const options = [];
-    for (let i = 0; i < this.state.level; i++) {
-      const noteOption = allNotes[i];
-      options.push(
-        <Button
-          onPress={this.handleButtonClick.bind(this, noteQuestioned, noteOption)}
-          title={noteOption}
-          color={blue}
-          key={noteOption}
-        />
-      );
-    };
-    return options;
-  }
-
-  handleButtonClick = async (noteQuestioned, noteUserAnswer) => {
-    const historyRecord = {
-      level: this.state.level,
-      noteQuestioned,
-      noteUserAnswer
-    };
-    const newHistory = this.state.history.concat(historyRecord);
-    const isAnswerCorrect = (noteQuestioned === noteUserAnswer);
-
-    const { score, newLevel, newSuccessConsequtiveCount } = isAnswerCorrect ?
-      this.handleCorrectAnswer() : this.handleWrongAnswer();
-
-    const fadeAnim = new Animated.Value(0);
-    Animated.timing(
-      fadeAnim,
-      {
-        toValue: 1,
-        duration: 1000
-      }).start();
-
-    const randNote = this.getRandNote(newLevel);
-
-    // TODO this is hacky refactor this later.
-    setTimeout(() => {PianoAudioManager.playSingleNote(randNote)}, 600);
-    this.setState({
-      score,
-      backgroundColor: isAnswerCorrect ?
-        fadeAnim.interpolate(GREEN_INTERPOLATION)
-        : fadeAnim.interpolate(RED_INTERPOLATION),
-      level: newLevel,
-      noteQuestioned: randNote,
-      successConsequtiveCount: newSuccessConsequtiveCount,
-      history: newHistory,
-      fadeAnim
-    });
-    this.handleSetRecord();
-  };
-
-  handleLoginAsFB = () => {
-    signInWithFacebook();
-    this.setState({name: firebase.auth().currentUser.displayName});
-  }
-
-  handleSetRecord = () => {
-    const user = firebase.auth().currentUser;
-    const name = user !== null ? user.displayName : this.state.name;
-    if (name === '') {
-      return;
-    }
-    firebase.database().ref('scores/' + name).set({
-      score: this.state.score,
-    });
-  }
-
-  render() {
-    const { backgroundColor, noteQuestioned, score } = this.state;
-    const noteOptions = this.getUserOptions(noteQuestioned);
-    return (
-      <View style={styles.container}>
-        <Animated.View style={[styles.container, { backgroundColor }]}>
-          <ScrollView>
-            <View style={styles.titleContainer}>
-              <Text style={styles.title}>Master Pitch</Text>
-            </View>
-            <View style={styles.buttonContainer}>
-              <TextInput
-                style={{height: 40, alignItems: 'center', width: 150, borderColor: 'gray', borderBottomWidth: 1}}
-                onChangeText={(name) => this.setState({ name })}
-                value={this.state.name}
-              />
-            </View>
-            <View style={styles.titleContainer}>
-              <Text style={styles.subtitle}>Score: {score}</Text>
-            </View>
-            <View style={styles.buttonContainer}>
-              {noteOptions}
-            </View>
-            <View style={styles.buttonContainer}>
-              <Button
-                onPress={() => {PianoAudioManager.playSingleNote(noteQuestioned)}}
-                title="Replay"
-                color={blue}
-                key="Replay"
-              />
-            </View>
-            <View style={styles.buttonContainer}>
-              <Button
-                style={styles.logInAsFBBtn}
-                onPress={this.handleLoginAsFB}
-                title="Log In as Facebook"
-                color={blue}
-                key="login"
-              />
-            </View>
-          </ScrollView>
-        </Animated.View>
-      </View>
-    );
-  }
-}

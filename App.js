@@ -11,7 +11,7 @@ import { Feather } from '@expo/vector-icons';
 import firebase from './app/utils/firebase';
 
 import AppListScreen from './app/screens/AppListScreen';
-import PitchScreen from './app/screens/PitchScreen';
+import PitchScreenApp from './app/screens/PitchScreen';
 import LeaderBoardScreen from './app/screens/LeaderBoardScreen';
 
 const TitleHomeTab = 'Home';
@@ -45,7 +45,7 @@ HomeTab.navigationOptions = {
 const TrainTab = createStackNavigator(
   {
     Train: {
-      screen: PitchScreen,
+      screen: PitchScreenApp,
       navigationOptions: {
         title: TitleTrainTab,
         headerTintColor: '#47525E',
