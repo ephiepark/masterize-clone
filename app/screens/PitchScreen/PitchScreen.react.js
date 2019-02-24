@@ -15,6 +15,7 @@ import {
   lightYellow
 } from '../../styles/Colors';
 import styles from './styles';
+import NoteOptions from '../../components/pitch/NoteOptions.react';
 
 const GREEN_INTERPOLATION = {
   inputRange: [0, 0.5, 1],
@@ -53,7 +54,7 @@ export default class PitchScreen extends Component {
     this.setState({name: firebase.auth().currentUser.displayName});
   }
 
-  handleButtonClick = async (noteQuestioned, noteUserAnswer) => {
+  handleButtonClick = (noteQuestioned, noteUserAnswer) => {
     this.props.onUserAnswer(noteUserAnswer);
     const isAnswerCorrect = noteQuestioned === noteUserAnswer;
     const fadeAnim = new Animated.Value(0);
@@ -71,21 +72,6 @@ export default class PitchScreen extends Component {
     this.handleSetRecord();
   };
 
-  getUserOptions(noteOptions, noteQuestioned) {
-    const options = [];
-    for (const noteOption of noteOptions) {
-      options.push(
-        <Button
-          onPress={this.handleButtonClick.bind(this, noteQuestioned, noteOption)}
-          title={noteOption}
-          color={blue}
-          key={noteOption}
-        />
-      );
-    };
-    return options;
-  }
-
   handleSetRecord = () => {
     const user = firebase.auth().currentUser;
     const name = user !== null ? user.displayName : this.state.name;
@@ -101,9 +87,17 @@ export default class PitchScreen extends Component {
     const { backgroundColor } = this.state;
     const { score } = this.props;
     const { noteOptions, noteQuestioned } = this.props.round;
-    let noteOptionButtons = [];
+    const onUserAnswer = noteUserAnswer => {
+      this.handleButtonClick(noteQuestioned, noteUserAnswer)
+    };
+    let noteOptionButtons = null;
     if (noteOptions && noteQuestioned) {
-      noteOptionButtons = this.getUserOptions(noteOptions, noteQuestioned);
+      noteOptionButtons = (
+        <NoteOptions
+          noteOptions={noteOptions}
+          onUserAnswer={onUserAnswer}
+        />
+      );
     }
     return (
       <View style={styles.container}>
