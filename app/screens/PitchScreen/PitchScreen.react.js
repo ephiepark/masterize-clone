@@ -48,7 +48,6 @@ export default class PitchScreen extends Component {
 
   state = {
     backgroundColor: lightYellow,
-    fadeAnim: new Animated.Value(1),
     name: ''
   };
 
@@ -148,8 +147,7 @@ export default class PitchScreen extends Component {
     this.setState({
       backgroundColor: isAnswerCorrect ?
         fadeAnim.interpolate(GREEN_INTERPOLATION)
-        : fadeAnim.interpolate(RED_INTERPOLATION),
-      fadeAnim
+        : fadeAnim.interpolate(RED_INTERPOLATION)
     });
     this.handleSetRecord();
   };
