@@ -5,7 +5,8 @@ import {
   Text,
   TextInput,
   View,
-  ScrollView
+  ScrollView,
+  ActivityIndicator
 } from 'react-native';
 import PianoAudioManager from '../../utils/PianoAudioManager';
 import firebase from '../../utils/firebase';
@@ -31,14 +32,9 @@ export default class PitchScreen extends Component {
 
   state = {
     backgroundColor: pastelPalette.background,
-    name: ''
   };
 
   componentDidMount() {
-    const user = firebase.auth().currentUser;
-    if (user !== null) {
-      this.setState({ name: user.displayName });
-    }
     this.props.onReadyForRound();
   }
 
@@ -81,6 +77,15 @@ export default class PitchScreen extends Component {
     const { backgroundColor } = this.state;
     const { score } = this.props;
     const { noteOptions, noteQuestioned } = this.props.round;
+    const loading = !(noteOptions || noteQuestioned);
+    if (loading) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      )
+    }
+
     const onUserAnswer = noteUserAnswer => {
       this.handleButtonClick(noteQuestioned, noteUserAnswer)
     };
@@ -108,15 +113,15 @@ export default class PitchScreen extends Component {
               </Text>
             </View>
             <View style={styles.buttonContainer}>
-              {noteOptionButtons}
-            </View>
-            <View style={styles.buttonContainer}>
               <Button
                 onPress={() => {PianoAudioManager.playSingleNote(noteQuestioned)}}
                 title="Replay"
                 color={pastelPalette.secondary}
                 key="Replay"
               />
+            </View>
+            <View style={styles.buttonContainer}>
+              {noteOptionButtons}
             </View>
           </ScrollView>
         </Animated.View>

@@ -10,7 +10,7 @@ function score(state = 0, action) {
   }
 }
 
-function level(state = 1, action) {
+function level(state = 7, action) {
   switch (action.type) {
     case SET_LEVEL:
       return action.payload.level;

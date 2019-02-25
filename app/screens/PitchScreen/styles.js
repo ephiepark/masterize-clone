@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
   },
   score: {
     fontSize: fontSizeResponsive(2),
-    color: white,
+    fontWeight: 'bold',
+    color: pastelPalette.extra,
   },
   nameContainer: {
     alignItems: 'center',
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 10,
     textAlign: 'center'
   },
 });
