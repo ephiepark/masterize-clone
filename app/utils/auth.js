@@ -1,4 +1,5 @@
 import firebase from './firebase'
+import { setUser } from '../actions/authActions';
 
 export async function signInWithFacebook() {
   const appId = Expo.Constants.manifest.facebookAppId;

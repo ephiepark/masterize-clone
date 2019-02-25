@@ -1,17 +1,18 @@
 import { combineReducers } from 'redux';
 import { SET_USER } from '../actions/authActions';
 
-function user(state = 0, action) {
+function user(state = {displayName: '', photoURL: ''}, action) {
+  console.log(action.type);
   switch (action.type) {
     case SET_USER:
-      return action.payload.score;
+      return action.payload.user;
     default:
       return state;
   }
 }
 
-const userReducer = combineReducers({
+const authReducer = combineReducers({
   user
 });
 
-export default userReducer;
+export default authReducer;

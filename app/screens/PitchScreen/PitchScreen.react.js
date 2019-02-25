@@ -11,18 +11,18 @@ import PianoAudioManager from '../../utils/PianoAudioManager';
 import firebase from '../../utils/firebase';
 import {
   blue,
-  lightYellow
+  pastelPalette
 } from '../../styles/Colors';
 import styles from './styles';
-import NoteOptions from '../../components/pitch/NoteOptions.react';
+import NoteButtons from '../../components/pitch/NoteButtons';
 
 const GREEN_INTERPOLATION = {
   inputRange: [0, 0.5, 1],
-  outputRange: [lightYellow, 'rgba(22, 173, 22, 0.71)', lightYellow]
+  outputRange: [pastelPalette.background, 'rgba(22, 173, 22, 0.71)', pastelPalette.background]
 };
 const RED_INTERPOLATION = {
   inputRange: [0, 0.5, 1],
-  outputRange: [lightYellow, 'rgba(131, 0, 0, 0.76)', lightYellow]
+  outputRange: [pastelPalette.background, 'rgba(131, 0, 0, 0.76)', pastelPalette.background]
 };
 
 export default class PitchScreen extends Component {
@@ -30,7 +30,7 @@ export default class PitchScreen extends Component {
   };
 
   state = {
-    backgroundColor: lightYellow,
+    backgroundColor: pastelPalette.background,
     name: ''
   };
 
@@ -87,7 +87,7 @@ export default class PitchScreen extends Component {
     let noteOptionButtons = null;
     if (noteOptions && noteQuestioned) {
       noteOptionButtons = (
-        <NoteOptions
+        <NoteButtons
           noteOptions={noteOptions}
           onUserAnswer={onUserAnswer}
         />
@@ -100,15 +100,8 @@ export default class PitchScreen extends Component {
             <View style={styles.titleContainer}>
               <Text style={styles.title}>Master Pitch</Text>
             </View>
-            <View style={styles.buttonContainer}>
-              <TextInput
-                style={{height: 40, alignItems: 'center', width: 150, borderColor: 'gray', borderBottomWidth: 1}}
-                onChangeText={name => this.setState({ name })}
-                value={this.state.name}
-              />
-            </View>
-            <View style={styles.titleContainer}>
-              <Text style={styles.subtitle}>
+            <View style={styles.nameContainer}>
+              <Text style={styles.score}>
                 Score:
                 {' '}
                 {score}
@@ -121,7 +114,7 @@ export default class PitchScreen extends Component {
               <Button
                 onPress={() => {PianoAudioManager.playSingleNote(noteQuestioned)}}
                 title="Replay"
-                color={blue}
+                color={pastelPalette.secondary}
                 key="Replay"
               />
             </View>

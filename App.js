@@ -120,17 +120,17 @@ const MainNavigator =
   Platform.OS === 'ios'
     ? createBottomTabNavigator(
         {
-          Home: {
-            screen: HomeTab,
-            navigationOptions: ({ navigation }) => ({
-              title: TitleHomeTab,
-              tabBarVisible: true
-            })
-          },
           Train: {
             screen: TrainTab,
             navigationOptions: ({ navigation }) => ({
               title: TitleTrainTab,
+              tabBarVisible: true
+            })
+          },
+          Home: {
+            screen: HomeTab,
+            navigationOptions: ({ navigation }) => ({
+              title: TitleHomeTab,
               tabBarVisible: true
             })
           },
@@ -194,7 +194,7 @@ const MainNavigator =
           }
         },
         {
-          initialRouteName: 'Home',
+          initialRouteName: 'Train',
           activeTintColor: '#F95F62',
           inactiveTintColor: '#8190A5',
           shifting: true,

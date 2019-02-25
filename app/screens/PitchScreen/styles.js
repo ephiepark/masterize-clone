@@ -2,7 +2,8 @@ import { StyleSheet } from 'react-native';
 import { fontSizeResponsive } from '../../utils/Metrics';
 import {
   white,
-  darkBlue
+  darkBlue,
+  pastelPalette,
 } from '../../styles/Colors';
 
 const styles = StyleSheet.create({
@@ -14,17 +15,25 @@ const styles = StyleSheet.create({
   title: {
     fontSize: fontSizeResponsive(4),
     fontWeight: 'bold',
-    color: white
-  },
-  subtitle: {
-    fontSize: fontSizeResponsive(2),
-    fontWeight: 'bold',
-    color: white
+    color: pastelPalette.primary
   },
   titleContainer: {
     alignItems: 'center',
     marginHorizontal: 50,
     paddingTop: 50
+  },
+  subtitle: {
+    fontSize: fontSizeResponsive(2),
+    fontWeight: 'bold',
+    color: pastelPalette.secondary
+  },
+  score: {
+    fontSize: fontSizeResponsive(2),
+    color: white,
+  },
+  nameContainer: {
+    alignItems: 'center',
+    padding: 20,
   },
   displayContainer: {
     alignItems: 'center',
@@ -35,9 +44,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
     textAlign: 'center'
   },
-  logInAsFBBtn: {
-    backgroundColor: darkBlue,
-  }
 });
 
 export default styles;
