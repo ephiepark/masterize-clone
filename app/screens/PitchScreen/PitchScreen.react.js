@@ -3,19 +3,18 @@ import {
   Animated,
   Button,
   Text,
-  TextInput,
   View,
   ScrollView,
   ActivityIndicator
 } from 'react-native';
+import ToggleSwitch from 'toggle-switch-react-native'
 import PianoAudioManager from '../../utils/PianoAudioManager';
 import firebase from '../../utils/firebase';
+import NoteButtons from '../../components/pitch/NoteButtons';
 import {
-  blue,
   pastelPalette
 } from '../../styles/Colors';
 import styles from './styles';
-import NoteButtons from '../../components/pitch/NoteButtons';
 
 const GREEN_INTERPOLATION = {
   inputRange: [0, 0.5, 1],
@@ -32,6 +31,7 @@ export default class PitchScreen extends Component {
 
   state = {
     backgroundColor: pastelPalette.background,
+    shuffle: false
   };
 
   componentDidMount() {
@@ -74,7 +74,7 @@ export default class PitchScreen extends Component {
   }
 
   render() {
-    const { backgroundColor } = this.state;
+    const { backgroundColor, shuffle } = this.state;
     const { score } = this.props;
     const { noteOptions, noteQuestioned } = this.props.round;
     const loading = !(noteOptions || noteQuestioned);
@@ -89,12 +89,14 @@ export default class PitchScreen extends Component {
     const onUserAnswer = noteUserAnswer => {
       this.handleButtonClick(noteQuestioned, noteUserAnswer)
     };
+
     let noteOptionButtons = null;
     if (noteOptions && noteQuestioned) {
       noteOptionButtons = (
         <NoteButtons
           noteOptions={noteOptions}
           onUserAnswer={onUserAnswer}
+          shuffle={shuffle}
         />
       );
     }
@@ -104,6 +106,17 @@ export default class PitchScreen extends Component {
           <ScrollView>
             <View style={styles.titleContainer}>
               <Text style={styles.title}>Master Pitch</Text>
+            </View>
+            <View style={styles.nameContainer}>
+              <ToggleSwitch
+                isOn={shuffle}
+                onColor='green'
+                offColor='gray'
+                label='Shuffle'
+                labelStyle={styles.toggle}
+                size='small'
+                onToggle={() => this.setState({shuffle: !shuffle})}
+              />
             </View>
             <View style={styles.nameContainer}>
               <Text style={styles.score}>

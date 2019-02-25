@@ -1,9 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { fontSizeResponsive } from '../../utils/Metrics';
 import {
-  white,
-  darkBlue,
   pastelPalette,
+  black
 } from '../../styles/Colors';
 
 const styles = StyleSheet.create({
@@ -30,11 +29,11 @@ const styles = StyleSheet.create({
   score: {
     fontSize: fontSizeResponsive(2),
     fontWeight: 'bold',
-    color: pastelPalette.extra,
+    color: pastelPalette.extra
   },
   nameContainer: {
     alignItems: 'center',
-    padding: 20,
+    padding: 20
   },
   displayContainer: {
     alignItems: 'center',
@@ -45,6 +44,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: 'center'
   },
+  toggle: {
+    color: black,
+    fontWeight: '900'
+  }
 });
 
 export default styles;
