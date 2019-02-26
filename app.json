@@ -8,6 +8,12 @@
       "ios",
       "android"
     ],
+    "ios": {
+      "bundleIdentifier": "com.masterize.masterpitch"
+    },
+    "android": {
+      "package": "com.masterize.masterpitch"
+    },
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./app/assets/images/icon.png",
