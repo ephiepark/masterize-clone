@@ -1,4 +1,8 @@
-import { maxLevel, minLevel, successCountForLevelUp } from '../constants/constants';
+import {
+  maxLevel,
+  minLevel,
+  successCountForLevelUp
+} from '../constants/constants';
 
 const RoundUtils = require('../utils/RoundUtils');
 const HistoryUtils = require('../utils/HistoryUtils');
@@ -76,7 +80,7 @@ export function handleUserAnswer(noteUserAnswer) {
         newSuccessConsequtiveCount % successCountForLevelUp === 0
       ) {
         dispatch(incrementLevel());
-      };
+      }
 
       newScore = score + 1;
     } else {

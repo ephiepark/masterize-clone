@@ -1,5 +1,10 @@
 import { combineReducers } from 'redux';
-import { SET_SCORE, SET_LEVEL, ADD_HISTORY, SET_ROUND } from '../actions/pitchActions';
+import {
+  SET_SCORE,
+  SET_LEVEL,
+  ADD_HISTORY,
+  SET_ROUND
+} from '../actions/pitchActions';
 
 function score(state = 0, action) {
   switch (action.type) {

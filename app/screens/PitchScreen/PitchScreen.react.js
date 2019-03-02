@@ -7,27 +7,32 @@ import {
   ScrollView,
   ActivityIndicator
 } from 'react-native';
-import ToggleSwitch from 'toggle-switch-react-native'
+import ToggleSwitch from 'toggle-switch-react-native';
 import PianoAudioManager from '../../utils/PianoAudioManager';
 import firebase from '../../utils/firebase';
 import NoteButtons from '../../components/pitch/NoteButtons';
-import {
-  pastelPalette
-} from '../../styles/Colors';
+import { pastelPalette } from '../../styles/Colors';
 import styles from './styles';
 
 const GREEN_INTERPOLATION = {
   inputRange: [0, 0.5, 1],
-  outputRange: [pastelPalette.background, 'rgba(22, 173, 22, 0.71)', pastelPalette.background]
+  outputRange: [
+    pastelPalette.background,
+    'rgba(22, 173, 22, 0.71)',
+    pastelPalette.background
+  ]
 };
 const RED_INTERPOLATION = {
   inputRange: [0, 0.5, 1],
-  outputRange: [pastelPalette.background, 'rgba(131, 0, 0, 0.76)', pastelPalette.background]
+  outputRange: [
+    pastelPalette.background,
+    'rgba(131, 0, 0, 0.76)',
+    pastelPalette.background
+  ]
 };
 
 export default class PitchScreen extends Component {
-  static navigationOptions = {
-  };
+  static navigationOptions = {};
 
   state = {
     backgroundColor: pastelPalette.background,
@@ -35,7 +40,9 @@ export default class PitchScreen extends Component {
   };
 
   componentDidMount() {
-    this.props.onReadyForRound();
+    PianoAudioManager.init().then(() => {
+      this.props.onReadyForRound();
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -48,15 +55,13 @@ export default class PitchScreen extends Component {
     this.props.onUserAnswer(noteUserAnswer);
     const isAnswerCorrect = noteQuestioned === noteUserAnswer;
     const fadeAnim = new Animated.Value(0);
-    Animated.timing(
-      fadeAnim,
-      {
-        toValue: 1,
-        duration: 1000
-      }).start();
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000
+    }).start();
     this.setState({
-      backgroundColor: isAnswerCorrect ?
-        fadeAnim.interpolate(GREEN_INTERPOLATION)
+      backgroundColor: isAnswerCorrect
+        ? fadeAnim.interpolate(GREEN_INTERPOLATION)
         : fadeAnim.interpolate(RED_INTERPOLATION)
     });
     this.handleSetRecord();
@@ -68,10 +73,13 @@ export default class PitchScreen extends Component {
     if (name === '') {
       return;
     }
-    firebase.database().ref(`scores/${name}`).set({
-      score: this.props.score
-    });
-  }
+    firebase
+      .database()
+      .ref(`scores/${name}`)
+      .set({
+        score: this.props.score
+      });
+  };
 
   render() {
     const { backgroundColor, shuffle } = this.state;
@@ -83,11 +91,11 @@ export default class PitchScreen extends Component {
         <View style={styles.container}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
-      )
+      );
     }
 
     const onUserAnswer = noteUserAnswer => {
-      this.handleButtonClick(noteQuestioned, noteUserAnswer)
+      this.handleButtonClick(noteQuestioned, noteUserAnswer);
     };
 
     let noteOptionButtons = null;
@@ -110,32 +118,28 @@ export default class PitchScreen extends Component {
             <View style={styles.nameContainer}>
               <ToggleSwitch
                 isOn={shuffle}
-                onColor='green'
-                offColor='gray'
-                label='Shuffle'
+                onColor="green"
+                offColor="gray"
+                label="Shuffle"
                 labelStyle={styles.toggle}
-                size='small'
-                onToggle={() => this.setState({shuffle: !shuffle})}
+                size="small"
+                onToggle={() => this.setState({ shuffle: !shuffle })}
               />
             </View>
             <View style={styles.nameContainer}>
-              <Text style={styles.score}>
-                Score:
-                {' '}
-                {score}
-              </Text>
+              <Text style={styles.score}>Score: {score}</Text>
             </View>
             <View style={styles.buttonContainer}>
               <Button
-                onPress={() => {PianoAudioManager.playSingleNote(noteQuestioned)}}
+                onPress={() => {
+                  PianoAudioManager.playSingleNote(noteQuestioned);
+                }}
                 title="Replay"
                 color={pastelPalette.secondary}
                 key="Replay"
               />
             </View>
-            <View style={styles.buttonContainer}>
-              {noteOptionButtons}
-            </View>
+            <View style={styles.buttonContainer}>{noteOptionButtons}</View>
           </ScrollView>
         </Animated.View>
       </View>
