@@ -11,7 +11,16 @@ const B4 = require('../assets/audios/piano_notes/Piano.mf.B4.aiff');
 class PianoAudioManager {
   pianoAudioMap = new Map();
 
-  async init(pianoAudioFileMap) {
+  async init() {
+    const pianoAudioFileMap = new Map([
+      ['C4', C4],
+      ['D4', D4],
+      ['E4', E4],
+      ['F4', F4],
+      ['G4', G4],
+      ['A4', A4],
+      ['B4', B4]
+    ]);
     const promises = [];
     for (const [note, audioFile] of pianoAudioFileMap) {
       const soundObject = new Audio.Sound();
@@ -38,14 +47,5 @@ class PianoAudioManager {
 
 // Singleton
 const pianoAudioManager = new PianoAudioManager();
-pianoAudioManager.init(new Map([
-  ["C4", C4],
-  ["D4", D4],
-  ["E4", E4],
-  ["F4", F4],
-  ["G4", G4],
-  ["A4", A4],
-  ["B4", B4]
-]));
 
 export default pianoAudioManager;

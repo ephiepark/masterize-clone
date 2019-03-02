@@ -8,15 +8,16 @@ import {
 } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { Feather } from '@expo/vector-icons';
-import firebase from './app/utils/firebase';
 
 import AppListScreen from './app/screens/AppListScreen';
 import PitchScreenApp from './app/screens/PitchScreen';
+import ProgressScreen from './app/screens/ProgressScreen';
 import LeaderBoardScreen from './app/screens/LeaderBoardScreen';
 import ProfileScreen from './app/screens/ProfileScreen';
 
 const TitleHomeTab = 'Home';
 const TitleTrainTab = 'Train';
+const TitleProgressTab = 'Progress';
 const TitleLeaderBoardTab = 'LeaderBoard';
 const TitleProfileTab = 'Profile';
 
@@ -65,6 +66,30 @@ const TrainTab = createStackNavigator(
 TrainTab.navigationOptions = {
   tabBarIcon: ({ tintColor }) => (
     <Feather name="star" size={20} color={tintColor} />
+  )
+};
+
+const ProgressTab = createStackNavigator(
+  {
+    Progress: {
+      screen: ProgressScreen,
+      navigationOptions: {
+        title: TitleProgressTab,
+        headerTintColor: '#47525E',
+        headerStyle: {
+          backgroundColor: '#ffffff'
+        }
+      }
+    }
+  },
+  {
+    initialRouteName: 'Progress'
+  }
+);
+
+ProgressTab.navigationOptions = {
+  tabBarIcon: ({ tintColor }) => (
+    <Feather name="trending-up" size={20} color={tintColor} />
   )
 };
 
@@ -127,6 +152,13 @@ const MainNavigator =
               tabBarVisible: true
             })
           },
+          Progress: {
+            screen: ProgressTab,
+            navigationOptions: ({ navigation }) => ({
+              title: TitleProgressTab,
+              tabBarVisible: true
+            })
+          },
           Home: {
             screen: HomeTab,
             navigationOptions: ({ navigation }) => ({
@@ -177,6 +209,13 @@ const MainNavigator =
             screen: TrainTab,
             navigationOptions: ({ navigation }) => ({
               title: TitleTrainTab,
+              tabBarVisible: true
+            })
+          },
+          Progress: {
+            screen: ProgressTab,
+            navigationOptions: ({ navigation }) => ({
+              title: TitleProgressTab,
               tabBarVisible: true
             })
           },
