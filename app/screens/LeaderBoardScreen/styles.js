@@ -5,7 +5,8 @@ import {
   lightGreen,
   white,
   lightGray,
-  darkBlue
+  darkBlue,
+  pastelPalette,
 } from '../../styles/Colors';
 import { fontSizeResponsive } from '../../utils/Metrics';
 
@@ -16,21 +17,43 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    margin: 8,
+    borderRadius: 18,
   },
-  scoreBoardContainer: {
-    padding: 30,
+  contentContainer: {
+    backgroundColor: pastelPalette.secondary,
+    flex: 1,
+    margin: 8,
+    borderRadius: 18,
   },
-  scoreBoardHeader: {
+  scoreBoardRow: {
+    backgroundColor: pastelPalette.backgroundDark,
+    borderRadius: 18,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  scoreBoardRowOffset: {
+    backgroundColor: pastelPalette.primaryLight,
+    borderRadius: 18,
+    margin: 10,
+  },
+  scoreRankBadge: {
     alignItems: 'center',
+    backgroundColor: pastelPalette.highlight,
+    borderRadius: 100,
+  },
+  scoreRank: {
+    alignItems: 'center',
+    fontSize: fontSizeResponsive(2),
+    padding: 15,
+    fontWeight: 'bold',
+  },
+  scoreBoardTitle: {
     fontSize: fontSizeResponsive(3),
     fontWeight: 'bold',
-    color: darkBlue,
-    padding: 20,
   },
-  scoreBoardItem: {
-    flex: 1,
-    padding: 10,
-    borderBottomWidth: 1,
+  scoreBoardSubtitle: {
+    fontSize: fontSizeResponsive(2),
   },
 });
 

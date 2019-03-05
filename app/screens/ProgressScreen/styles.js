@@ -13,19 +13,11 @@ const styles = StyleSheet.create({
     borderRadius: 18,
   },
   contentContainer: {
-    backgroundColor: pastelPalette.primary,
+    backgroundColor: pastelPalette.highlight,
     flex: 1,
     margin: 8,
-    padding: 30,
+    padding: 20,
     borderRadius: 18,
-  },
-  avatar: {
-    margin: 8,
-    alignItems: 'center'
-  },
-  name: {
-    padding: 8,
-    alignItems: 'center'
   },
   title: {
     fontSize: fontSizeResponsive(3),

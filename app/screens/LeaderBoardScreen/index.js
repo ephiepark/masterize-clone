@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { List, ListItem } from "react-native-elements";
 import { Feather } from '@expo/vector-icons';
 import firebase from '../../utils/firebase';
 import NotificationCard from '../../components/cards/NotificationCard';
@@ -69,9 +70,24 @@ export default class LeaderBoardScreen extends Component {
   renderScoreBoardItem = ({item, index}) => {
     const rank = index + 1;
     return (
-      <View style={styles.scoreBoardItem}>
-        <Text>{rank}. {item.name} : {item.score}</Text>
-      </View>
+      <ListItem
+        key={`scoreBoardItem--${index}`}
+        containerStyle={rank % 2 === 0 ? styles.scoreBoardRow : styles.scoreBoardRowOffset}
+        title={item.name}
+        titleStyle={styles.scoreBoardTitle}
+        subtitle={
+          <Text style={styles.scoreBoardSubtitle}>
+            Score : {item.score}
+          </Text>
+        }
+        leftAvatar={
+          <View style={styles.scoreRankBadge}>
+            <Text style={styles.scoreRank}>
+              {rank}
+            </Text>
+          </View>
+        }
+      />
     )
   }
 
@@ -86,8 +102,7 @@ export default class LeaderBoardScreen extends Component {
     }
     return (
       <View style={styles.container}>
-        <View style={styles.scoreBoardContainer}>
-          <Text style={styles.scoreBoardHeader}> Ranking </Text>
+        <View style={styles.contentContainer}>
           <FlatList
             data={this.sortByScores(this.state.scores)}
             renderItem={this.renderScoreBoardItem}

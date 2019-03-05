@@ -12,8 +12,10 @@ export const lightYellow = '#EAB079';
 export const lightGreen = '#82c596';
 export const black = 'rgb(50, 49, 49)';
 export const pastelPalette = {
-  background: '#f7f4e3',
+  background: '#f2e9b9',
+  backgroundDark: '#ede7c0',
   primary: '#a3cf86',
+  primaryLight: '#d0eebb',
   secondary: '#edc668',
   highlight: '#f9c4aa',
   extra: '#e9957e'
