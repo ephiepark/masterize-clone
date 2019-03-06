@@ -1,19 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
-import { List, ListItem } from "react-native-elements";
+import { View, Text, FlatList } from 'react-native';
+import { ListItem } from 'react-native-elements';
 import { Feather } from '@expo/vector-icons';
 import firebase from '../../utils/firebase';
-import NotificationCard from '../../components/cards/NotificationCard';
-import FilterModal from '../../components/modals/FilterModal';
-import AppRow from '../../components/cards/rows/AppRow';
 import { TouchableOpacity } from '../../components/common/TouchableOpacity';
+import Loader from '../../animations/Loader';
 
-import {
-  darkBlue,
-  blue,
-  lightRed,
-  lightYellow
-} from '../../styles/Colors';
+import { darkBlue } from '../../styles/Colors';
 
 import styles from './styles';
 
@@ -34,71 +27,79 @@ export default class LeaderBoardScreen extends Component {
   };
 
   state = {
-    scores: null,
-  }
+    scores: null
+  };
 
   componentDidMount() {
     this.setupScoreListener();
-  };
+  }
 
   setupScoreListener() {
-    firebase.database().ref('scores').on('value', (snapshot) => {
-      this.setState({scores: snapshot.val()})
-    });
+    firebase
+      .database()
+      .ref('scores')
+      .on('value', snapshot => {
+        this.setState({ scores: snapshot.val() });
+      });
   }
 
   handleGetRecords = () => {
     const user = firebase.auth().currentUser;
     if (user != null) {
-      firebase.database().ref('scores/' + user.displayName).set({
-        score: this.state.level,
-      });
+      firebase
+        .database()
+        .ref(`scores/${user.displayName}`)
+        .set({
+          score: this.state.level
+        });
     }
-  }
+  };
 
-  sortByScores = (scoreBoard) => {
-    var sortedScores = [];
-    for (var name in scoreBoard) {
-      sortedScores.push({name: name, score: scoreBoard[name].score});
+  sortByScores = scoreBoard => {
+    const sortedScores = [];
+    for (const name in scoreBoard) {
+      if (name) {
+        sortedScores.push({ name, score: scoreBoard[name].score });
+      }
     }
-    sortedScores.sort(function(a, b) {
+    sortedScores.sort((a, b) => {
       return b.score - a.score;
     });
     return sortedScores;
-  }
+  };
 
-  renderScoreBoardItem = ({item, index}) => {
+  renderScoreBoardItem = ({ item, index }) => {
     const rank = index + 1;
     return (
       <ListItem
         key={`scoreBoardItem--${index}`}
-        containerStyle={rank % 2 === 0 ? styles.scoreBoardRow : styles.scoreBoardRowOffset}
+        containerStyle={
+          rank % 2 === 0 ? styles.scoreBoardRow : styles.scoreBoardRowOffset
+        }
         title={item.name}
         titleStyle={styles.scoreBoardTitle}
         subtitle={
-          <Text style={styles.scoreBoardSubtitle}>
-            Score : {item.score}
-          </Text>
+          <Text style={styles.scoreBoardSubtitle}>Score : {item.score}</Text>
         }
         leftAvatar={
           <View style={styles.scoreRankBadge}>
-            <Text style={styles.scoreRank}>
-              {rank}
-            </Text>
+            <Text style={styles.scoreRank}>{rank}</Text>
           </View>
         }
       />
-    )
-  }
+    );
+  };
 
   render() {
     const loading = this.state.scores === null;
     if (loading) {
       return (
         <View style={styles.container}>
-          <ActivityIndicator size="large" color="#0000ff" />
+          <View style={styles.loaderContainer}>
+            <Loader />
+          </View>
         </View>
-      )
+      );
     }
     return (
       <View style={styles.container}>
@@ -106,7 +107,7 @@ export default class LeaderBoardScreen extends Component {
           <FlatList
             data={this.sortByScores(this.state.scores)}
             renderItem={this.renderScoreBoardItem}
-            keyExtractor={(item) => item.name}
+            keyExtractor={item => item.name}
           />
         </View>
       </View>

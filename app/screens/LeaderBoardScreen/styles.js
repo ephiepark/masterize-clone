@@ -1,13 +1,5 @@
 import { StyleSheet } from 'react-native';
-import {
-  lightRed,
-  lightYellow,
-  lightGreen,
-  white,
-  lightGray,
-  darkBlue,
-  pastelPalette,
-} from '../../styles/Colors';
+import { pastelPalette } from '../../styles/Colors';
 import { fontSizeResponsive } from '../../utils/Metrics';
 
 const styles = StyleSheet.create({
@@ -18,43 +10,50 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 8,
-    borderRadius: 18,
+    borderRadius: 18
   },
   contentContainer: {
     backgroundColor: pastelPalette.secondary,
     flex: 1,
     margin: 8,
+    borderRadius: 18
+  },
+  loaderContainer: {
+    backgroundColor: pastelPalette.secondary,
+    flex: 1,
+    margin: 8,
     borderRadius: 18,
+    alignItems: 'center'
   },
   scoreBoardRow: {
     backgroundColor: pastelPalette.backgroundDark,
     borderRadius: 18,
     marginLeft: 10,
-    marginRight: 10,
+    marginRight: 10
   },
   scoreBoardRowOffset: {
     backgroundColor: pastelPalette.primaryLight,
     borderRadius: 18,
-    margin: 10,
+    margin: 10
   },
   scoreRankBadge: {
     alignItems: 'center',
     backgroundColor: pastelPalette.highlight,
-    borderRadius: 100,
+    borderRadius: 100
   },
   scoreRank: {
     alignItems: 'center',
     fontSize: fontSizeResponsive(2),
     padding: 15,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   scoreBoardTitle: {
     fontSize: fontSizeResponsive(3),
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   scoreBoardSubtitle: {
-    fontSize: fontSizeResponsive(2),
-  },
+    fontSize: fontSizeResponsive(2)
+  }
 });
 
 export default styles;

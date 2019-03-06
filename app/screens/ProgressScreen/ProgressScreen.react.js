@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { allNotes } from '../../constants/constants';
-
+import Loader from '../../animations/Loader';
 import styles from './styles';
 
 const HistoryUtils = require('../../utils/HistoryUtils');
@@ -27,7 +27,8 @@ export default function ProgressScreen({ history }) {
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
-        <View>{noteSuccessRates}</View>
+        <Loader />
+        <View style={styles.notesContainer}>{noteSuccessRates}</View>
       </View>
     </View>
   );
