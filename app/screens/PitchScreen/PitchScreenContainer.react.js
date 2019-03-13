@@ -1,3 +1,5 @@
+// @flow
+
 import { connect } from 'react-redux';
 import { initRound, handleUserAnswer } from '../../actions/pitchActions';
 import PitchScreen from './PitchScreen.react';

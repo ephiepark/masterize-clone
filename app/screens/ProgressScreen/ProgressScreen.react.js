@@ -1,11 +1,19 @@
+// @flow
+
+import type {HistoryRecord} from '../../types/types.js';
+
 import React from 'react';
 import { View, Text } from 'react-native';
 import { allNotes } from '../../constants/constants';
 
 const HistoryUtils = require('../../utils/HistoryUtils');
 
-export default function ProgressScreen({ history }) {
-  const noteResultCountMap = HistoryUtils.getNoteResultCountMap(history);
+type Props = {
+  history: Array<HistoryRecord>,
+};
+
+export default function ProgressScreen(props: Props) {
+  const noteResultCountMap = HistoryUtils.getNoteResultCountMap(props.history);
   const noteSuccessRates = [];
   for (const note of allNotes) {
     const noteResult = noteResultCountMap.get(note);

@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import {
   Animated,
@@ -8,6 +10,7 @@ import {
   ActivityIndicator
 } from 'react-native';
 import ToggleSwitch from 'toggle-switch-react-native';
+import type {HistoryRecord, Round} from '../../types/types.js';
 import PianoAudioManager from '../../utils/PianoAudioManager';
 import firebase from '../../utils/firebase';
 import NoteButtons from '../../components/pitch/NoteButtons';
@@ -31,10 +34,25 @@ const RED_INTERPOLATION = {
   ]
 };
 
-export default class PitchScreen extends Component {
+type Props = {
+  score: number,
+  level: number,
+  history: Array<HistoryRecord>,
+  round: Round,
+  onReadyForRound: () => void,
+  onUserAnswer: (string) => void,
+};
+type State = {
+  name: ?string,
+  backgroundColor: any,
+  shuffle: boolean,
+};
+
+export default class PitchScreen extends Component<Props, State> {
   static navigationOptions = {};
 
   state = {
+    name: null,
     backgroundColor: pastelPalette.background,
     shuffle: false
   };
@@ -45,13 +63,13 @@ export default class PitchScreen extends Component {
     });
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Props) {
     if (this.props.round.roundId !== prevProps.round.roundId) {
       PianoAudioManager.playSingleNote(this.props.round.noteQuestioned);
     }
   }
 
-  handleButtonClick = (noteQuestioned, noteUserAnswer) => {
+  handleButtonClick = (noteQuestioned: string, noteUserAnswer: string) => {
     this.props.onUserAnswer(noteUserAnswer);
     const isAnswerCorrect = noteQuestioned === noteUserAnswer;
     const fadeAnim = new Animated.Value(0);
@@ -127,7 +145,10 @@ export default class PitchScreen extends Component {
               />
             </View>
             <View style={styles.nameContainer}>
-              <Text style={styles.score}>Score: {score}</Text>
+              <Text style={styles.score}>
+Score:
+                {score}
+              </Text>
             </View>
             <View style={styles.buttonContainer}>
               <Button
