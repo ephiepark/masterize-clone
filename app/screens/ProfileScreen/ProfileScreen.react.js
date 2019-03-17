@@ -1,11 +1,11 @@
 // @flow
 
 import type {Node} from 'react';
-import type {User} from '../../types/types.js';
 
 import React, { Component } from 'react';
 import { View, Text, Button, FlatList, ActivityIndicator } from 'react-native';
 import { Avatar } from "react-native-elements";
+import type {User} from '../../types/types.js';
 import firebase from '../../utils/firebase';
 import { signInWithFacebook } from '../../utils/auth';
 import { TouchableOpacity } from '../../components/common/TouchableOpacity';
@@ -62,7 +62,7 @@ export default class ProfileScreen extends Component<Props> {
       <View style={styles.container}>
         <View style={styles.contentContainer}>
           <View style={styles.avatar}>
-            {this.getAvatar(displayName, photoURL)}
+            {this.getAvatar(photoURL)}
           </View>
           <View style={styles.name}>
             <Text style={styles.title}>{displayName}</Text>
