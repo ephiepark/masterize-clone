@@ -60,19 +60,21 @@ export default class ProfileScreen extends Component<Props> {
     const {displayName, photoURL} = this.props.user;
     return (
       <View style={styles.container}>
-        <View style={styles.avatar}>
-          {this.getAvatar(photoURL)}
+        <View style={styles.contentContainer}>
+          <View style={styles.avatar}>
+            {this.getAvatar(displayName, photoURL)}
+          </View>
+          <View style={styles.name}>
+            <Text style={styles.title}>{displayName}</Text>
+          </View>
+          <Button
+            style={styles.logInAsFBBtn}
+            onPress={this.handleLoginAsFB}
+            title="Log in as Facebook"
+            color={blue}
+            key="login"
+          />
         </View>
-        <View style={styles.name}>
-          <Text style={styles.title}>{displayName}</Text>
-        </View>
-        <Button
-          style={styles.logInAsFBBtn}
-          onPress={this.handleLoginAsFB}
-          title="Log in as Facebook"
-          color={blue}
-          key="login"
-        />
       </View>
     );
   }

@@ -1,32 +1,21 @@
-// @flow
-
 import { StyleSheet } from 'react-native';
 import { fontSizeResponsive } from '../../utils/Metrics';
-import {
-  white,
-  darkBlue,
-  pastelPalette,
-} from '../../styles/Colors';
+import { babyBlue } from '../../styles/Colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 8,
-    borderRadius: 18,
+    borderRadius: 18
   },
   contentContainer: {
-    backgroundColor: pastelPalette.primary,
+    backgroundColor: babyBlue,
     flex: 1,
     margin: 8,
-    padding: 30,
-    borderRadius: 18,
+    padding: 20,
+    borderRadius: 18
   },
-  avatar: {
-    margin: 8,
-    alignItems: 'center'
-  },
-  name: {
-    padding: 8,
+  notesContainer: {
     alignItems: 'center'
   },
   title: {

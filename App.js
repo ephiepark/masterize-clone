@@ -159,13 +159,6 @@ const MainNavigator =
               tabBarVisible: true
             })
           },
-          Home: {
-            screen: HomeTab,
-            navigationOptions: ({ navigation }) => ({
-              title: TitleHomeTab,
-              tabBarVisible: true
-            })
-          },
           LeaderBoard: {
             screen: LeaderBoardTab,
             navigationOptions: {
@@ -198,13 +191,6 @@ const MainNavigator =
       )
     : createMaterialBottomTabNavigator(
         {
-          Home: {
-            screen: HomeTab,
-            navigationOptions: ({ navigation }) => ({
-              title: TitleHomeTab,
-              tabBarVisible: true
-            })
-          },
           Train: {
             screen: TrainTab,
             navigationOptions: ({ navigation }) => ({

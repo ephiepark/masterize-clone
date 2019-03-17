@@ -15,6 +15,7 @@ import PianoAudioManager from '../../utils/PianoAudioManager';
 import firebase from '../../utils/firebase';
 import NoteButtons from '../../components/pitch/NoteButtons';
 import { pastelPalette } from '../../styles/Colors';
+import SoundLoader from '../../animations/SoundLoader';
 import styles from './styles';
 
 const GREEN_INTERPOLATION = {
@@ -38,7 +39,7 @@ type Props = {
   score: number,
   level: number,
   history: Array<HistoryRecord>,
-  round: Round,
+  round: ?Round,
   onReadyForRound: () => void,
   onUserAnswer: (string) => void,
 };
@@ -64,7 +65,10 @@ export default class PitchScreen extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.round.roundId !== prevProps.round.roundId) {
+    if (
+      (this.props.round !== null && prevProps.round === null) ||
+      this.props.round.roundId !== prevProps.round.roundId
+    ) {
       PianoAudioManager.playSingleNote(this.props.round.noteQuestioned);
     }
   }
@@ -102,15 +106,16 @@ export default class PitchScreen extends Component<Props, State> {
   render() {
     const { backgroundColor, shuffle } = this.state;
     const { score } = this.props;
-    const { noteOptions, noteQuestioned } = this.props.round;
-    const loading = !(noteOptions || noteQuestioned);
-    if (loading) {
+
+    if (this.props.round === null) {
       return (
         <View style={styles.container}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       );
     }
+
+    const { noteOptions, noteQuestioned } = this.props.round;
 
     const onUserAnswer = noteUserAnswer => {
       this.handleButtonClick(noteQuestioned, noteUserAnswer);
@@ -160,6 +165,7 @@ Score:
                 key="Replay"
               />
             </View>
+            <SoundLoader/>
             <View style={styles.buttonContainer}>{noteOptionButtons}</View>
           </ScrollView>
         </Animated.View>
