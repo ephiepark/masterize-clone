@@ -65,11 +65,16 @@ export default class PitchScreen extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (
-      (this.props.round !== null && prevProps.round === null) ||
-      this.props.round.roundId !== prevProps.round.roundId
-    ) {
-      PianoAudioManager.playSingleNote(this.props.round.noteQuestioned);
+    const roundCurr = this.props.round;
+    const roundPrev = prevProps.round;
+    if (roundCurr) {
+      if (roundPrev) {
+        if (roundCurr.roundId !== roundPrev.roundId) {
+          PianoAudioManager.playSingleNote(roundCurr.noteQuestioned);
+        }
+      } else {
+        PianoAudioManager.playSingleNote(roundCurr.noteQuestioned);
+      }
     }
   }
 
@@ -105,71 +110,71 @@ export default class PitchScreen extends Component<Props, State> {
 
   render() {
     const { backgroundColor, shuffle } = this.state;
-    const { score } = this.props;
+    const { score, round } = this.props;
 
-    if (this.props.round === null) {
+    if (round) {
+      const { noteOptions, noteQuestioned } = round;
+
+      const onUserAnswer = noteUserAnswer => {
+        this.handleButtonClick(noteQuestioned, noteUserAnswer);
+      };
+
+      let noteOptionButtons = null;
+      if (noteOptions && noteQuestioned) {
+        noteOptionButtons = (
+          <NoteButtons
+            noteOptions={noteOptions}
+            onUserAnswer={onUserAnswer}
+            shuffle={shuffle}
+          />
+        );
+      }
+      return (
+        <View style={styles.container}>
+          <Animated.View style={[styles.container, { backgroundColor }]}>
+            <ScrollView>
+              <View style={styles.titleContainer}>
+                <Text style={styles.title}>Master Pitch</Text>
+              </View>
+              <View style={styles.nameContainer}>
+                <ToggleSwitch
+                  isOn={shuffle}
+                  onColor="green"
+                  offColor="gray"
+                  label="Shuffle"
+                  labelStyle={styles.toggle}
+                  size="small"
+                  onToggle={() => this.setState({ shuffle: !shuffle })}
+                />
+              </View>
+              <View style={styles.nameContainer}>
+                <Text style={styles.score}>
+  Score:
+                  {score}
+                </Text>
+              </View>
+              <View style={styles.buttonContainer}>
+                <Button
+                  onPress={() => {
+                    PianoAudioManager.playSingleNote(noteQuestioned);
+                  }}
+                  title="Replay"
+                  color={pastelPalette.secondary}
+                  key="Replay"
+                />
+              </View>
+              <SoundLoader />
+              <View style={styles.buttonContainer}>{noteOptionButtons}</View>
+            </ScrollView>
+          </Animated.View>
+        </View>
+      );
+    } 
       return (
         <View style={styles.container}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       );
-    }
-
-    const { noteOptions, noteQuestioned } = this.props.round;
-
-    const onUserAnswer = noteUserAnswer => {
-      this.handleButtonClick(noteQuestioned, noteUserAnswer);
-    };
-
-    let noteOptionButtons = null;
-    if (noteOptions && noteQuestioned) {
-      noteOptionButtons = (
-        <NoteButtons
-          noteOptions={noteOptions}
-          onUserAnswer={onUserAnswer}
-          shuffle={shuffle}
-        />
-      );
-    }
-    return (
-      <View style={styles.container}>
-        <Animated.View style={[styles.container, { backgroundColor }]}>
-          <ScrollView>
-            <View style={styles.titleContainer}>
-              <Text style={styles.title}>Master Pitch</Text>
-            </View>
-            <View style={styles.nameContainer}>
-              <ToggleSwitch
-                isOn={shuffle}
-                onColor="green"
-                offColor="gray"
-                label="Shuffle"
-                labelStyle={styles.toggle}
-                size="small"
-                onToggle={() => this.setState({ shuffle: !shuffle })}
-              />
-            </View>
-            <View style={styles.nameContainer}>
-              <Text style={styles.score}>
-Score:
-                {score}
-              </Text>
-            </View>
-            <View style={styles.buttonContainer}>
-              <Button
-                onPress={() => {
-                  PianoAudioManager.playSingleNote(noteQuestioned);
-                }}
-                title="Replay"
-                color={pastelPalette.secondary}
-                key="Replay"
-              />
-            </View>
-            <SoundLoader/>
-            <View style={styles.buttonContainer}>{noteOptionButtons}</View>
-          </ScrollView>
-        </Animated.View>
-      </View>
-    );
+    
   }
 }
