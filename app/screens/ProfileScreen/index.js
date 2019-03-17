@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import { Provider } from 'react-redux';
 import ProfileScreenContainer from './ProfileScreenContainer.react';

@@ -1,3 +1,8 @@
+// @flow
+
+import type {Node} from 'react';
+import type {User} from '../../types/types.js';
+
 import React, { Component } from 'react';
 import { View, Text, Button, FlatList, ActivityIndicator } from 'react-native';
 import { Avatar } from "react-native-elements";
@@ -14,14 +19,16 @@ import {
 
 import styles from './styles';
 
-export default class ProfileScreen extends Component {
-  static navigationOptions = ({ navigation }) => {
-  };
+type Props = {
+  user: User,
+  setUser: (User) => void,
+};
 
+export default class ProfileScreen extends Component<Props> {
   componentDidMount() {
   };
 
-  getAvatar(name, photoURL) {
+  getAvatar(photoURL: string): Node {
     if(photoURL === '') {
       return (
         <Avatar
