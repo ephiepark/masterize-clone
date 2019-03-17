@@ -15,6 +15,7 @@ import PianoAudioManager from '../../utils/PianoAudioManager';
 import firebase from '../../utils/firebase';
 import NoteButtons from '../../components/pitch/NoteButtons';
 import { pastelPalette } from '../../styles/Colors';
+import SoundLoader from '../../animations/SoundLoader';
 import styles from './styles';
 
 const GREEN_INTERPOLATION = {
@@ -160,6 +161,7 @@ Score:
                 key="Replay"
               />
             </View>
+            <SoundLoader/>
             <View style={styles.buttonContainer}>{noteOptionButtons}</View>
           </ScrollView>
         </Animated.View>
