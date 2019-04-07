@@ -2,13 +2,16 @@
 
 import React from 'react';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import ProgressScreenContainer from './ProgressScreenContainer.react';
-import store from '../../store/store';
+import { persistor, store } from '../../store/store';
 
 export default function ProgressScreen() {
   return (
     <Provider store={store}>
-      <ProgressScreenContainer />
+      <PersistGate loading={null} persistor={persistor}>
+        <ProgressScreenContainer />
+      </PersistGate>
     </Provider>
   );
-};
+}

@@ -2,13 +2,16 @@
 
 import React from 'react';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import ProfileScreenContainer from './ProfileScreenContainer.react';
-import store from '../../store/store';
+import { persistor, store } from '../../store/store';
 
 export default function PitchScreenApp() {
   return (
     <Provider store={store}>
-      <ProfileScreenContainer />
+      <PersistGate loading={null} persistor={persistor}>
+        <ProfileScreenContainer />
+      </PersistGate>
     </Provider>
   );
-};
+}

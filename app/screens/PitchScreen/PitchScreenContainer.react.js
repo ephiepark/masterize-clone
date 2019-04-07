@@ -7,8 +7,6 @@ import PitchScreen from './PitchScreen.react';
 const mapStateToProps = state => {
   return {
     score: state.pitch.score,
-    level: state.pitch.level,
-    history: state.pitch.history,
     round: state.pitch.round
   };
 };
