@@ -10,7 +10,7 @@ import {
   ActivityIndicator
 } from 'react-native';
 import ToggleSwitch from 'toggle-switch-react-native';
-import type {HistoryRecord, Round} from '../../types/types.js';
+import type { Round } from '../../types/types';
 import PianoAudioManager from '../../utils/PianoAudioManager';
 import firebase from '../../utils/firebase';
 import NoteButtons from '../../components/pitch/NoteButtons';
@@ -37,16 +37,14 @@ const RED_INTERPOLATION = {
 
 type Props = {
   score: number,
-  level: number,
-  history: Array<HistoryRecord>,
   round: ?Round,
   onReadyForRound: () => void,
-  onUserAnswer: (string) => void,
+  onUserAnswer: string => void
 };
 type State = {
   name: ?string,
   backgroundColor: any,
-  shuffle: boolean,
+  shuffle: boolean
 };
 
 export default class PitchScreen extends Component<Props, State> {
@@ -149,7 +147,7 @@ export default class PitchScreen extends Component<Props, State> {
               </View>
               <View style={styles.nameContainer}>
                 <Text style={styles.score}>
-  Score:
+                  Score:
                   {score}
                 </Text>
               </View>
@@ -169,12 +167,11 @@ export default class PitchScreen extends Component<Props, State> {
           </Animated.View>
         </View>
       );
-    } 
-      return (
-        <View style={styles.container}>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
-      );
-    
+    }
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
   }
 }
