@@ -5,7 +5,7 @@ import type {Node} from 'react';
 import React, { Component } from 'react';
 import { View, Text, Button, FlatList, ActivityIndicator } from 'react-native';
 import { Avatar } from "react-native-elements";
-import type {User} from '../../types/types.js';
+import type {User} from '../../types/types';
 import firebase from '../../utils/firebase';
 import { signInWithFacebook } from '../../utils/auth';
 import { TouchableOpacity } from '../../components/common/TouchableOpacity';
