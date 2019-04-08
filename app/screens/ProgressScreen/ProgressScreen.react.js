@@ -1,9 +1,9 @@
 // @flow
 
-import type {HistoryRecord} from '../../types/types.js';
 
 import React from 'react';
 import { View, Text } from 'react-native';
+import type {HistoryRecord} from '../../types/types';
 import { allNotes } from '../../constants/constants';
 import Loader from '../../animations/Loader';
 import styles from './styles';
@@ -24,7 +24,7 @@ export default function ProgressScreen(props: Props) {
       const countCorrect = noteResult[0];
       const countWrong = noteResult[1];
       const successRate = (countCorrect * 100) / (countCorrect + countWrong);
-      msg = `${note}: ${successRate}%`;
+      msg = `${note}: ${successRate.toFixed(2)}%`;
     }
     noteSuccessRates.push(
       <View key={note}>
